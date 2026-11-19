@@ -4,7 +4,7 @@ import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import './index.css'
 import { RoleShell } from '@/app/RoleShell'
 import { Toaster } from '@/app/toast'
-import { Splash } from '@/features/Splash'
+import { SignIn, SignUp } from '@/features/auth/Auth'
 import { NelayanHome } from '@/features/nelayan/NelayanHome'
 import { SubmitProject } from '@/features/nelayan/SubmitProject'
 import { MyProjects, ProjectDetailNelayan } from '@/features/nelayan/MyProjects'
@@ -24,7 +24,8 @@ import { Community, ThreadDetail } from '@/features/investor/Community'
 const Styleguide = lazy(() => import('@/pages/Styleguide').then((m) => ({ default: m.Styleguide })))
 
 const router = createBrowserRouter([
-  { path: '/', element: <Splash /> },
+  { path: '/', element: <SignIn /> },
+  { path: '/daftar', element: <SignUp /> },
   {
     path: '/nelayan',
     element: <RoleShell role="nelayan" />,

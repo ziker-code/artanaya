@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router'
 import { BottomNav, DisclaimerBar, Skeleton, type NavItem } from '@/design'
 import { useStore } from '@/data/store'
+import { startSync } from '@/data/sync'
 import type { Role } from '@/data/types'
 
 const NAV: Record<Role, NavItem[]> = {
@@ -32,7 +33,7 @@ export function useBoot() {
   const ready = useStore((s) => s.ready)
   const init = useStore((s) => s.init)
   useEffect(() => {
-    void init()
+    void init().then(() => startSync())
   }, [init])
   return ready
 }

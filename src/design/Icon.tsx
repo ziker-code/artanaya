@@ -11,6 +11,8 @@ import {
   DocumentUpload,
   Drop,
   Element3,
+  Eye,
+  EyeSlash,
   EmptyWallet,
   Folder2,
   Global,
@@ -96,6 +98,8 @@ const registry = {
   anchor: Drop,
   more: Element3,
   send: Send2,
+  eye: Eye,
+  'eye-slash': EyeSlash,
 } satisfies Record<string, IconsaxIcon>
 
 export type IconName = keyof typeof registry

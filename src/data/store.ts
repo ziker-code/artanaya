@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware'
 import { computeScore, type SignalInput } from '@/lib/scoring'
 import { makeBlock, type LedgerPayload } from '@/lib/ledger'
 import type { BusinessType } from '@/lib/scoring.config'
-import { buildSeed, daysFromNow, makeStages, SEED_VERSION } from './seed'
+import { buildSeed, daysFromNow, FACILITATOR_WA, makeStages, SEED_VERSION } from './seed'
 import type { ForumThread, FraudAlert, Investment, LedgerBlock, Project, SecurityEvent, User, UserPrefs } from './types'
 
 /**
@@ -47,7 +47,13 @@ type State = Data & {
   createThread: (t: { title: string; body: string; tag: string }) => ForumThread
   addComment: (threadId: string, body: string) => void
   toggleLike: (threadId: string) => void
+  /** Daftar akun baru (prototipe: tanpa server auth) lalu langsung masuk. */
+  registerUser: (u: { name: string; contact: string; role: 'nelayan' | 'investor'; location: string }) => User
+  /** Masuk dengan nama/HP/email akun yang ada. Kata sandi demo: "artanaya". */
+  loginWithPassword: (identifier: string, password: string) => User
 }
+
+export const DEMO_PASSWORD = 'artanaya'
 
 export const DEFAULT_PREFS: UserPrefs = { notifWhatsapp: true, notifPush: true, loginAlert: true, twoStep: false, hideBalance: false }
 const ROLE_LABEL = { nelayan: 'Nelayan', investor: 'Investor', admin: 'Admin' } as const
@@ -331,6 +337,40 @@ export const useStore = create<State>()(
         const me = get().users.find((u) => u.id === get().sessionUserId)!
         const c = { id: `C-${Date.now()}`, authorId: me.id, authorName: me.name, authorRole: ROLE_LABEL[me.role], body, createdAt: now() }
         set({ forum: get().forum.map((t) => (t.id === threadId ? { ...t, comments: [...t.comments, c] } : t)) })
+      },
+
+      registerUser: ({ name, contact, role, location }) => {
+        const isEmail = contact.includes('@')
+        const u: User = {
+          id: `u-${Date.now()}`,
+          role,
+          name: name.trim(),
+          initials: initialsOf(name),
+          location: location.trim() || 'Indonesia',
+          phone: isEmail ? '-' : contact.trim(),
+          email: isEmail ? contact.trim() : undefined,
+          facilitator: role === 'nelayan' ? { name: 'Dimas Pratama', phone: FACILITATOR_WA, org: 'Karang Taruna' } : undefined,
+          joinedAt: now(),
+        }
+        set({ users: [...get().users, u] })
+        writeSession(u.id)
+        set({ sessionUserId: u.id })
+        return u
+      },
+
+      loginWithPassword: (identifier, password) => {
+        const key = identifier.trim().toLowerCase().replace(/[\s-]/g, '')
+        const login = ['u-rudi', 'u-dedi', 'u-admin']
+        const u = get().users.find((x) => {
+          if (!login.includes(x.id) && !x.id.startsWith('u-1')) return false
+          const names = [x.name, x.name.split(' ')[0], x.phone, x.email ?? '', x.role === 'admin' ? 'admin' : ''].map((v) => v.toLowerCase().replace(/[\s-]/g, ''))
+          return names.includes(key)
+        })
+        if (!u) throw new Error('Akun tidak ditemukan. Coba "davin", "lichiang", atau "admin".')
+        if (password !== DEMO_PASSWORD) throw new Error('Kata sandi salah.')
+        writeSession(u.id)
+        set({ sessionUserId: u.id })
+        return u
       },
 
       toggleLike: (threadId) => {

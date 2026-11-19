@@ -150,3 +150,11 @@
     transform: translateX(28px);
   }
 }
+@keyframes drip {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(1.12);
+  }
+}

@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import './index.css'
@@ -19,7 +19,7 @@ import { Prospectus } from '@/features/investor/Prospectus'
 import { Portfolio } from '@/features/investor/Portfolio'
 import { SecurityRadar } from '@/features/investor/SecurityRadar'
 import { Community } from '@/features/investor/Community'
-import { Styleguide } from '@/pages/Styleguide'
+const Styleguide = lazy(() => import('@/pages/Styleguide').then((m) => ({ default: m.Styleguide })))
 
 const router = createBrowserRouter([
   { path: '/', element: <Splash /> },
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
       { path: 'profil', element: <ProfileCommon /> },
     ],
   },
-  { path: '/styleguide', element: <Styleguide /> },
+  { path: '/styleguide', element: <Suspense fallback={null}><Styleguide /></Suspense> },
   { path: '*', element: <Navigate to="/" replace /> },
 ])
 

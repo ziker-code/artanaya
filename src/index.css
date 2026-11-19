@@ -1,55 +1,58 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/plus-jakarta-sans';
-@import '@fontsource/instrument-serif/400.css';
-@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
 
-/* ARTANAYA design tokens — lihat docs/PRD.md §6. Jangan menambah warna di luar daftar ini. */
+/* ARTANAYA design tokens v2 — gaya "sage · hitam · lime" (lihat docs/progress/05-redesign.md).
+   Nama token lama dipertahankan agar layar tidak perlu diubah; nilainya yang diganti. */
 @theme {
   --color-*: initial;
   --color-white: #ffffff;
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  --color-paper: #f4efe4;
-  --color-paper-sunk: #eae3d3;
-  --color-surface: #fbf8f2;
-  --color-ink: #1c211e;
-  --color-ink-muted: #5c625d;
-  --color-ink-faint: #8a8f89;
-  --color-line: #dcd4c3;
+  --color-paper: #d3e0ca;        /* latar sage */
+  --color-paper-sunk: #e4ecdc;   /* input, area tenggelam */
+  --color-surface: #f7faf3;      /* kartu putih kehijauan */
+  --color-ink: #0d0f0b;
+  --color-ink-muted: #56604d;
+  --color-ink-faint: #879079;
+  --color-line: #c2d1b8;
 
-  --color-kelp-950: #0b1f18;
-  --color-kelp-900: #0f2a21;
-  --color-kelp-800: #163628;
-  --color-kelp-700: #1b4334;
-  --color-kelp-500: #3d6b56;
-  --color-kelp-300: #9fbba8;
-  --color-kelp-200: #c9d8cb;
-  --color-kelp-100: #e3ebe2;
+  --color-kelp-950: #070806;     /* hitam kartu */
+  --color-kelp-900: #111310;
+  --color-kelp-800: #1d201b;
+  --color-kelp-700: #26331d;     /* teks hijau tua */
+  --color-kelp-500: #5d8c39;
+  --color-kelp-300: #a6b29c;     /* teks sekunder di atas hitam */
+  --color-kelp-200: #b8e68f;     /* batang grafik lembut */
+  --color-kelp-100: #e3f2d3;
 
-  --color-sun-600: #c99223;
-  --color-sun-500: #e3ae3f;
-  --color-sun-300: #efcd85;
-  --color-sun-100: #f7e8c4;
+  --color-sun-600: #8fd046;      /* lime tekan */
+  --color-sun-500: #a6e465;      /* lime aksi utama */
+  --color-sun-300: #c9f39a;      /* lime terang di atas hitam */
+  --color-sun-100: #ebf8dc;
 
-  --color-coral-700: #963a25;
-  --color-coral-600: #b9492f;
-  --color-coral-100: #f4dcd3;
+  --color-coral-700: #983824;
+  --color-coral-600: #c44d33;
+  --color-coral-100: #f6ddd5;
 
-  --color-tide-600: #2c6a6e;
-  --color-tide-100: #d9e8e7;
+  --color-tide-600: #2d5f57;
+  --color-tide-100: #d9e9e1;
 
-  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Poppins', ui-sans-serif, system-ui, sans-serif;
 
   --text-2xs: 0.75rem;
   --text-2xs--line-height: 1rem;
 
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --radius-sm: 14px;
+  --radius-md: 24px;
+  --radius-lg: 32px;
 
-  --shadow-float: 0 12px 32px -12px rgb(15 42 33 / 0.28), 0 2px 6px -2px rgb(15 42 33 / 0.12);
+  --shadow-float: 0 18px 40px -16px rgb(7 8 6 / 0.45), 0 4px 10px -4px rgb(7 8 6 / 0.2);
+  --shadow-soft: 0 6px 18px -10px rgb(7 8 6 / 0.25);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -61,7 +64,6 @@
   }
   body {
     @apply bg-paper font-sans text-ink antialiased;
-    font-feature-settings: 'ss01';
   }
   :focus-visible {
     outline: 2px solid var(--color-tide-600);
@@ -78,8 +80,8 @@
 }
 
 @utility paper-grain {
-  background-image: radial-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px);
-  background-size: 4px 4px;
+  background-image: radial-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 5px 5px;
 }
 
 @keyframes fade {
@@ -99,5 +101,52 @@
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+@keyframes shimmer-star {
+  0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  50% { opacity: 0.55; transform: scale(0.8) rotate(20deg); }
+}
+
+@utility press {
+  transition: transform 160ms var(--ease-out-soft), background-color 160ms, color 160ms, box-shadow 160ms;
+  &:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+}
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-120%) scale(0.9);
+  }
+}
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes page-push {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
   }
 }

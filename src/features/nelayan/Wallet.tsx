@@ -34,13 +34,13 @@ export function Wallet() {
       <div className="flex flex-col gap-4 px-5 pt-3">
         <HeroCard>
           <p className="text-sm text-kelp-300">Dana diterima</p>
-          <p className="num mt-1 text-[34px] font-extrabold tracking-tight">{formatRupiah(w.received)}</p>
+          <p className="num mt-1 text-[34px] font-semibold tracking-tight">{formatRupiah(w.received)}</p>
           <p className="num text-sm text-kelp-300">sudah disetor kembali {formatRupiah(w.paid)}</p>
           <div className="mt-5 grid grid-cols-2 gap-2">
             <Button size="sm" disabled={!avail} onClick={() => setSheet('cair')}>
               Ajukan Pencairan
             </Button>
-            <Button size="sm" variant="ghost" className="border-white/25 text-paper hover:bg-white/10" disabled={!active?.nextDue} onClick={() => setSheet('setor')}>
+            <Button size="sm" variant="ghost" disabled={!active?.nextDue} onClick={() => setSheet('setor')}>
               Setor Bagi Hasil
             </Button>
           </div>

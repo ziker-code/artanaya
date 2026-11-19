@@ -70,11 +70,11 @@ export function SubmitProject() {
                     onClick={() => setType(t)}
                     aria-pressed={type === t}
                     className={cn(
-                      'flex flex-col items-start gap-3 rounded-md border p-4 text-left transition-colors',
-                      type === t ? 'border-kelp-700 bg-kelp-100' : 'border-line bg-surface hover:bg-paper-sunk',
+                      'press flex flex-col items-start gap-3 rounded-md border-2 p-4 text-left',
+                      type === t ? 'border-kelp-950 bg-kelp-950 text-white' : 'border-transparent bg-surface',
                     )}
                   >
-                    <span className={cn('flex size-10 items-center justify-center rounded-full', type === t ? 'bg-kelp-700 text-paper' : 'bg-paper-sunk text-ink')}>
+                    <span className={cn('flex size-10 items-center justify-center rounded-full', type === t ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-950 text-white')}>
                       <Icon name={TYPE_ICON[t]} size={20} />
                     </span>
                     <span className="font-bold">{BUSINESS_LABEL[t]}</span>
@@ -105,7 +105,7 @@ export function SubmitProject() {
                 rows={4}
                 value={plan}
                 onChange={(e) => setPlan(e.target.value)}
-                className="rounded-sm border border-transparent bg-paper-sunk p-3.5 text-base outline-none focus:border-kelp-700 focus:bg-surface"
+                className="rounded-[22px] border-2 border-transparent bg-white p-4 text-base outline-none focus:border-kelp-950"
               />
               <p className="text-sm text-ink-muted">Tulis singkat: untuk apa, dan apa yang membaik setelahnya.</p>
             </div>
@@ -169,7 +169,7 @@ export function SubmitProject() {
               <Toggle checked={sku} onChange={setSku} title="Surat Keterangan Usaha (SKU)" desc="Dari kantor desa" />
             </div>
 
-            <div className="sticky bottom-3 flex items-center gap-3 rounded-md bg-kelp-900 p-3 text-paper shadow-float">
+            <div className="sticky bottom-3 flex items-center gap-3 rounded-md bg-kelp-900 p-3 text-white shadow-float">
               <div className="rounded-full bg-paper p-0.5">
                 <ScoreDial score={result.score} complete={result.complete} size={48} />
               </div>
@@ -215,7 +215,7 @@ export function SubmitProject() {
 
 function Toggle({ checked, onChange, title, desc }: { checked: boolean; onChange: (v: boolean) => void; title: string; desc: string }) {
   return (
-    <button role="switch" aria-checked={checked} onClick={() => onChange(!checked)} className="flex items-center gap-3 rounded-md border border-line bg-surface p-4 text-left">
+    <button role="switch" aria-checked={checked} onClick={() => onChange(!checked)} className="flex items-center gap-3 press rounded-md bg-surface p-4 text-left">
       <span className="min-w-0 flex-1">
         <span className="block font-semibold">{title}</span>
         <span className="block truncate text-sm text-ink-muted">{desc}</span>

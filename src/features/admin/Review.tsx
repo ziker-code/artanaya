@@ -24,7 +24,7 @@ export function ReviewList() {
         <div className="mt-4 flex flex-col gap-3">
           {list.length === 0 && <EmptyState icon="check" title="Antrean kosong" body="Semua pengajuan sudah ditinjau." />}
           {list.map((p) => (
-            <button key={p.id} onClick={() => nav(`/admin/tinjau/${p.id}`)} className="rounded-md border border-line bg-surface p-4 text-left transition-colors hover:border-kelp-300">
+            <button key={p.id} onClick={() => nav(`/admin/tinjau/${p.id}`)} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
               <div className="mb-2 flex items-center gap-2">
                 <span className="flex size-8 items-center justify-center rounded-full bg-kelp-100 text-kelp-700">
                   <Icon name={TYPE_ICON[p.type]} size={16} />
@@ -128,7 +128,7 @@ export function ReviewDetail() {
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Catatan untuk nelayan / fasilitator (opsional)"
-              className="rounded-sm border border-transparent bg-paper-sunk p-3.5 text-base outline-none focus:border-kelp-700 focus:bg-surface"
+              className="rounded-[22px] border-2 border-transparent bg-white p-4 text-base outline-none focus:border-kelp-950"
             />
             <Button block variant={recommendPublish ? 'primary' : 'ghost'} icon="check" onClick={() => act('publish')}>
               Verifikasi & Tayangkan

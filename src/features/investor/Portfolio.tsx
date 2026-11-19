@@ -40,7 +40,7 @@ export function Portfolio() {
           <div className="flex items-end justify-between">
             <div>
               <p className="text-sm text-ink-muted">Total modal tersalur</p>
-              <p className="num text-2xl font-extrabold">{formatRupiah(total)}</p>
+              <p className="num text-2xl font-semibold">{formatRupiah(total)}</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-ink-muted">Bagi hasil</p>
@@ -55,7 +55,7 @@ export function Portfolio() {
         {byProject.length === 0 && <EmptyState icon="chart-bar" title="Belum ada investasi" body="Mulai dari Rp50.000 di proyek pilihan Anda." />}
 
         {byProject.map(({ p, amount, last }) => (
-          <button key={p.id} onClick={() => nav(`/investor/proyek/${p.id}`)} className="rounded-md border border-line bg-surface p-4 text-left transition-colors hover:border-kelp-300">
+          <button key={p.id} onClick={() => nav(`/investor/proyek/${p.id}`)} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
             <div className="mb-2 flex items-center justify-between gap-2">
               <span className="num text-2xs font-semibold text-ink-muted">{p.id}</span>
               <StatusBadge status={p.status} />

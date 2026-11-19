@@ -1,105 +1,106 @@
 import {
-  AnchorIcon,
-  ArrowDownLeftIcon,
-  ArrowUpRightIcon,
-  BellIcon,
-  BoatIcon,
-  CalendarDotsIcon,
-  CaretLeftIcon,
-  CaretRightIcon,
-  ChartBarIcon,
-  ChatsCircleIcon,
-  CheckIcon,
-  ClipboardTextIcon,
-  CookingPotIcon,
-  CopyIcon,
-  CrosshairSimpleIcon,
-  DropIcon,
-  FileTextIcon,
-  FishIcon,
-  FolderSimpleIcon,
-  GearSixIcon,
-  GoogleLogoIcon,
-  HouseIcon,
-  IdentificationCardIcon,
-  InfoIcon,
-  LinkSimpleIcon,
-  LockSimpleIcon,
-  MagnifyingGlassIcon,
-  MapPinIcon,
-  MinusIcon,
-  PlantIcon,
-  PlusIcon,
-  QuestionIcon,
-  ScanSmileyIcon,
-  SealCheckIcon,
-  ShieldCheckIcon,
-  SignOutIcon,
-  UploadSimpleIcon,
-  UserIcon,
-  WalletIcon,
-  WarningCircleIcon,
-  WavesIcon,
-  WhatsappLogoIcon,
-  XIcon,
-  type Icon as PhosphorIcon,
-} from '@phosphor-icons/react'
+  Add,
+  ArrowLeft2,
+  ArrowRight2,
+  Calendar2,
+  Chart2,
+  ClipboardTick,
+  CloseCircle,
+  Copy,
+  DocumentText,
+  DocumentUpload,
+  Drop,
+  Element3,
+  EmptyWallet,
+  Folder2,
+  Global,
+  Google,
+  Home2,
+  InfoCircle,
+  Link21,
+  Location,
+  Lock1,
+  Logout,
+  MessageQuestion,
+  Messages2,
+  Minus,
+  MoneyRecive,
+  MoneySend,
+  Notification,
+  Personalcard,
+  Radar2,
+  Reserve,
+  Scanning,
+  SearchNormal1,
+  Setting2,
+  Ship,
+  ShieldTick,
+  Sun1,
+  TickCircle,
+  Tree,
+  User,
+  Verify,
+  Warning2,
+  Whatsapp,
+  type Icon as IconsaxIcon,
+} from 'iconsax-react'
 
 /**
- * Satu pintu untuk semua ikon. Nama mengikuti PRD Lampiran A.
- * Untuk mengganti dengan SVG unduhan sendiri: ubah entri di peta ini saja.
+ * Satu pintu untuk semua ikon — paket Iconsax (MIT), gaya garis membulat sesuai referensi.
+ * Nama dipertahankan agar layar tidak perlu diubah; ganti entri di peta ini untuk menukar ikon.
  */
 const registry = {
-  home: HouseIcon,
-  folder: FolderSimpleIcon,
-  wallet: WalletIcon,
-  help: QuestionIcon,
-  user: UserIcon,
-  chats: ChatsCircleIcon,
-  radar: CrosshairSimpleIcon,
-  'clipboard-check': ClipboardTextIcon,
-  link: LinkSimpleIcon,
-  plus: PlusIcon,
-  minus: MinusIcon,
-  plant: PlantIcon,
-  fish: FishIcon,
-  boat: BoatIcon,
-  'cooking-pot': CookingPotIcon,
-  drop: DropIcon,
-  upload: UploadSimpleIcon,
-  'chart-bar': ChartBarIcon,
-  calendar: CalendarDotsIcon,
-  'arrow-down-left': ArrowDownLeftIcon,
-  'arrow-up-right': ArrowUpRightIcon,
-  'identification-card': IdentificationCardIcon,
-  'scan-face': ScanSmileyIcon,
-  'shield-check': ShieldCheckIcon,
-  lock: LockSimpleIcon,
-  'map-pin': MapPinIcon,
-  warning: WarningCircleIcon,
-  bell: BellIcon,
-  search: MagnifyingGlassIcon,
-  'caret-left': CaretLeftIcon,
-  'caret-right': CaretRightIcon,
-  whatsapp: WhatsappLogoIcon,
-  google: GoogleLogoIcon,
-  'sign-out': SignOutIcon,
-  gear: GearSixIcon,
-  'file-text': FileTextIcon,
-  copy: CopyIcon,
-  check: CheckIcon,
-  close: XIcon,
-  info: InfoIcon,
-  verified: SealCheckIcon,
-  waves: WavesIcon,
-  anchor: AnchorIcon,
-} satisfies Record<string, PhosphorIcon>
+  home: Home2,
+  folder: Folder2,
+  wallet: EmptyWallet,
+  help: MessageQuestion,
+  user: User,
+  chats: Messages2,
+  radar: Radar2,
+  'clipboard-check': ClipboardTick,
+  link: Link21,
+  plus: Add,
+  minus: Minus,
+  plant: Tree,
+  fish: Ship,
+  boat: Ship,
+  'cooking-pot': Reserve,
+  drop: Sun1,
+  upload: DocumentUpload,
+  'chart-bar': Chart2,
+  calendar: Calendar2,
+  'arrow-down-left': MoneyRecive,
+  'arrow-up-right': MoneySend,
+  'identification-card': Personalcard,
+  'scan-face': Scanning,
+  'shield-check': ShieldTick,
+  lock: Lock1,
+  'map-pin': Location,
+  warning: Warning2,
+  bell: Notification,
+  search: SearchNormal1,
+  'caret-left': ArrowLeft2,
+  'caret-right': ArrowRight2,
+  whatsapp: Whatsapp,
+  google: Google,
+  'sign-out': Logout,
+  gear: Setting2,
+  'file-text': DocumentText,
+  copy: Copy,
+  check: TickCircle,
+  close: CloseCircle,
+  info: InfoCircle,
+  verified: Verify,
+  waves: Global,
+  anchor: Drop,
+  more: Element3,
+} satisfies Record<string, IconsaxIcon>
 
 export type IconName = keyof typeof registry
 
 type Props = {
   name: IconName
-  size?: 16 | 20 | 24 | 28 | 32
+  size?: 16 | 18 | 20 | 22 | 24 | 28 | 32
   filled?: boolean
   className?: string
   label?: string
@@ -108,14 +109,15 @@ type Props = {
 export function Icon({ name, size = 20, filled = false, className, label }: Props) {
   const Cmp = registry[name]
   return (
-    <Cmp
-      size={size}
-      weight={filled ? 'fill' : 'regular'}
+    <span
       className={className}
+      style={{ display: 'inline-flex', lineHeight: 0 }}
       aria-hidden={label ? undefined : true}
       aria-label={label}
       role={label ? 'img' : undefined}
-    />
+    >
+      <Cmp size={size} color="currentColor" variant={filled ? 'Bold' : 'Linear'} />
+    </span>
   )
 }
 

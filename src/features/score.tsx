@@ -32,7 +32,7 @@ export function ScoreSummary({ r, s, compact }: { r: ScoreResult; s: SignalInput
         <ScoreDial score={r.score} complete={r.complete} size={76} />
         <div className="min-w-0">
           <p className="text-sm text-ink-muted">Skor kelayakan AI</p>
-          <p className="num text-[28px] font-extrabold leading-tight">
+          <p className="num text-[28px] font-semibold leading-tight">
             {r.score}
             <span className="text-base font-semibold text-ink-muted">/100</span>
           </p>

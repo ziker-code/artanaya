@@ -41,7 +41,7 @@ export function Prospectus() {
           <span className="inline-flex h-6 items-center gap-1 rounded-full bg-black/25 px-2.5 text-2xs font-semibold">
             <Icon name={TYPE_ICON[p.type]} size={16} /> {BUSINESS_LABEL[p.type]}
           </span>
-          <h1 className="mt-6 text-[24px] font-extrabold leading-tight">{p.title}</h1>
+          <h1 className="mt-6 text-[24px] font-semibold leading-tight">{p.title}</h1>
           <p className="mt-1 flex items-center gap-1 text-sm text-white/85">
             <Icon name="map-pin" size={16} /> {p.location}
           </p>
@@ -49,7 +49,7 @@ export function Prospectus() {
 
         <div>
           <div className="mb-2 flex items-baseline justify-between">
-            <span className="num text-2xl font-extrabold">{formatRupiah(p.raised)}</span>
+            <span className="num text-2xl font-semibold">{formatRupiah(p.raised)}</span>
             <span className="num text-sm font-semibold text-ink-muted">{Math.round((p.raised / p.target) * 100)}%</span>
           </div>
           <ProgressBar value={(p.raised / p.target) * 100} />
@@ -76,7 +76,7 @@ export function Prospectus() {
           <p className="text-[15px] leading-relaxed text-ink">{p.summary}</p>
           <p className="mt-2 text-sm leading-relaxed text-ink-muted">{p.plan}</p>
           <Card className="mt-3 flex items-center gap-3 p-4">
-            <span className="flex size-11 items-center justify-center rounded-full bg-kelp-700 text-sm font-bold text-paper">{owner.initials}</span>
+            <span className="flex size-11 items-center justify-center rounded-full bg-kelp-700 text-sm font-bold text-white">{owner.initials}</span>
             <div className="text-sm">
               <p className="font-bold">{owner.name}</p>
               <p className="text-ink-muted">Pengelola usaha · KUSUKA terverifikasi</p>
@@ -103,7 +103,7 @@ export function Prospectus() {
         </section>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-[480px] border-t border-line bg-surface/95 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur-md">
+      <div className="fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-[480px] px-5 pb-[calc(16px+env(safe-area-inset-bottom))]">
         {p.status === 'live' ? (
           <Button block icon="plus" onClick={() => { setDone(null); setAgree(false); setOpen(true) }}>
             Danai Proyek · mulai Rp50.000
@@ -122,7 +122,7 @@ export function Prospectus() {
               <Icon name="verified" size={32} />
             </span>
             <div>
-              <p className="num text-2xl font-extrabold">{formatRupiah(done.amount)}</p>
+              <p className="num text-2xl font-semibold">{formatRupiah(done.amount)}</p>
               <p className="text-sm text-ink-muted">masuk escrow {p.id}</p>
             </div>
             <Card className="w-full p-4 text-left">
@@ -143,7 +143,7 @@ export function Prospectus() {
                 <button
                   key={v}
                   onClick={() => setAmount(v)}
-                  className={cn('h-9 rounded-full border px-4 text-sm font-semibold', amount === v ? 'border-kelp-900 bg-kelp-900 text-paper' : 'border-line bg-surface')}
+                  className={cn('h-9 rounded-full border px-4 text-sm font-semibold', amount === v ? 'border-kelp-900 bg-kelp-900 text-white' : 'border-line bg-surface')}
                 >
                   {formatRupiahShort(v)}
                 </button>

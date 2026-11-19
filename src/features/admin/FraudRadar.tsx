@@ -44,7 +44,7 @@ export function FraudRadar() {
           {(['tinggi', 'sedang', 'rendah'] as const).map((s) => (
             <Card key={s} className="p-3">
               <span className={cn('block h-1 w-6 rounded-full', SEV[s].strip)} />
-              <p className="num mt-2 text-xl font-extrabold">{open.filter((a) => a.severity === s).length}</p>
+              <p className="num mt-2 text-xl font-semibold">{open.filter((a) => a.severity === s).length}</p>
               <p className="text-2xs capitalize text-ink-muted">{s}</p>
             </Card>
           ))}

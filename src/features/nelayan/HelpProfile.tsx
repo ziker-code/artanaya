@@ -33,7 +33,7 @@ export function NelayanHelp() {
           <h2 className="mb-2 text-lg font-bold">Pertanyaan umum</h2>
           <div className="flex flex-col gap-2">
             {faq.map(([q, a]) => (
-              <details key={q} className="group rounded-md border border-line bg-surface p-4 [&_summary::-webkit-details-marker]:hidden">
+              <details key={q} className="group press rounded-md bg-surface p-4 [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 font-semibold">
                   {q}
                   <span className="text-ink-faint transition-transform group-open:rotate-45">+</span>

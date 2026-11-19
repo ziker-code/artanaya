@@ -1,3 +1,4 @@
+import { InstallAppCard } from '@/app/pwa'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Badge, Button, Card, Divider, HeroCard, Icon, ListRow, Panel, Reveal, TextField, TopBar } from '@/design'
@@ -258,6 +259,9 @@ export function ProfileSettings() {
           </span>
           <Icon name="check" className="text-sun-600" />
         </Card>
+
+        <h2 className="mt-2 text-sm font-semibold text-ink-muted">Aplikasi</h2>
+        <InstallAppCard />
 
         <h2 className="mt-2 text-sm font-semibold text-ink-muted">Data demo</h2>
         <Card className="p-4">

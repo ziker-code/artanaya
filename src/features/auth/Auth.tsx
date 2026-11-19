@@ -1,3 +1,4 @@
+import { InstallAppCard } from '@/app/pwa'
 import { useId, useState, type InputHTMLAttributes, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { BottomSheet, Button, Icon, LogoMark, Reveal, Segmented, type IconName } from '@/design'
@@ -214,6 +215,7 @@ export function SignIn() {
       </Reveal>
 
       <DemoAccounts />
+      <InstallAppCard className="mt-6" />
       <Disclaimer />
 
       <BottomSheet open={forgot} onOpenChange={setForgot} title="Lupa kata sandi?" description="Tim pusat bantuan akan membantu memulihkan akun lewat WhatsApp.">

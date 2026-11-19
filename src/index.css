@@ -1,0 +1,103 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+/* ARTANAYA design tokens — lihat docs/PRD.md §6. Jangan menambah warna di luar daftar ini. */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-paper: #f4efe4;
+  --color-paper-sunk: #eae3d3;
+  --color-surface: #fbf8f2;
+  --color-ink: #1c211e;
+  --color-ink-muted: #5c625d;
+  --color-ink-faint: #8a8f89;
+  --color-line: #dcd4c3;
+
+  --color-kelp-950: #0b1f18;
+  --color-kelp-900: #0f2a21;
+  --color-kelp-800: #163628;
+  --color-kelp-700: #1b4334;
+  --color-kelp-500: #3d6b56;
+  --color-kelp-300: #9fbba8;
+  --color-kelp-200: #c9d8cb;
+  --color-kelp-100: #e3ebe2;
+
+  --color-sun-600: #c99223;
+  --color-sun-500: #e3ae3f;
+  --color-sun-300: #efcd85;
+  --color-sun-100: #f7e8c4;
+
+  --color-coral-700: #963a25;
+  --color-coral-600: #b9492f;
+  --color-coral-100: #f4dcd3;
+
+  --color-tide-600: #2c6a6e;
+  --color-tide-100: #d9e8e7;
+
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  --text-2xs: 0.75rem;
+  --text-2xs--line-height: 1rem;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-float: 0 12px 32px -12px rgb(15 42 33 / 0.28), 0 2px 6px -2px rgb(15 42 33 / 0.12);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-feature-settings: 'ss01';
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-tide-600);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-sun-300);
+  }
+}
+
+@utility num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+@utility paper-grain {
+  background-image: radial-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

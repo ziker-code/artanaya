@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(./**)",
+      "Read(./**)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(git *)",
+      "Bash(supabase *)",
+      "Bash(vercel *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(mkdir *)",
+      "PowerShell(npm *)",
+      "PowerShell(npx *)",
+      "PowerShell(node *)",
+      "PowerShell(git *)",
+      "PowerShell(supabase *)",
+      "PowerShell(vercel *)"
+    ]
+  }
+}

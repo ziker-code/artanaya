@@ -7,9 +7,9 @@ import { useSyncStatus } from '@/data/sync'
 import { toast } from '@/app/toast'
 import type { Role } from '@/data/types'
 
-const accounts: { role: Role; userId: string; name: string; desc: string; icon: IconName }[] = [
-  { role: 'nelayan', userId: DEMO.nelayan, name: 'Pak Rudi · Nelayan', desc: 'Pembudidaya rumput laut, Lombok Tengah. Ajukan modal, lihat skor, cairkan dana.', icon: 'plant' },
-  { role: 'investor', userId: DEMO.investor, name: 'Dedi · Investor', desc: 'Investor ritel, Bogor. Telusuri proyek, danai mulai Rp50.000, pantau keamanan.', icon: 'chart-bar' },
+const accounts: { role: Role; userId: string; name: string; desc: string; icon: IconName; photo?: string }[] = [
+  { role: 'nelayan', userId: DEMO.nelayan, photo: '/avatars/davin.webp', name: 'Pak Davin · Nelayan', desc: 'Pembudidaya rumput laut, Lombok Tengah. Ajukan modal, lihat skor, cairkan dana.', icon: 'plant' },
+  { role: 'investor', userId: DEMO.investor, photo: '/avatars/li-chiang.png', name: 'Li Chiang · Investor', desc: 'Investor ritel, Bogor. Telusuri proyek, danai mulai Rp50.000, pantau keamanan.', icon: 'chart-bar' },
   { role: 'admin', userId: DEMO.admin, name: 'Admin Pengelola', desc: 'Verifikasi pengajuan, audit ledger smart contract, tindak lanjuti radar penipuan.', icon: 'clipboard-check' },
 ]
 
@@ -52,9 +52,13 @@ export function Splash() {
                   }}
                   className="flex w-full items-center gap-4 press rounded-md bg-surface p-4 text-left hover:shadow-soft hover:bg-white disabled:opacity-50"
                 >
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-kelp-950 text-white">
-                    <Icon name={a.icon} size={24} />
-                  </span>
+                  {a.photo ? (
+                    <img src={a.photo} alt="" className="size-12 shrink-0 rounded-full object-cover object-[50%_22%]" />
+                  ) : (
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-kelp-950 text-white">
+                      <Icon name={a.icon} size={24} />
+                    </span>
+                  )}
                   <span className="min-w-0 flex-1">
                     <span className="block font-semibold text-ink">{a.name}</span>
                     <span className="mt-0.5 block text-2xs leading-snug text-ink-muted">{a.desc}</span>

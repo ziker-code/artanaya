@@ -1,3 +1,4 @@
+import { openWa } from '@/lib/wa'
 import { useNavigate } from 'react-router'
 import { Button, Card, Divider, ListRow } from '@/design'
 import { useMe, useStore } from '@/data/store'
@@ -22,11 +23,17 @@ export function NelayanHelp() {
             <p className="text-sm text-ink-muted">Fasilitator digital Bapak</p>
             <p className="mt-1 text-lg font-bold">{f.name}</p>
             <p className="text-sm text-ink-muted">{f.org}</p>
-            <a href={`https://wa.me/${f.phone}?text=${encodeURIComponent('Halo Mas, saya butuh bantuan di ARTANAYA.')}`} target="_blank" rel="noreferrer" className="mt-4 block">
-              <Button block variant="secondary" icon="whatsapp">
-                Chat lewat WhatsApp
+            <div className="mt-4 flex flex-col gap-2">
+              <Button block variant="secondary" icon="whatsapp" onClick={() => openWa(`Halo Mas ${f.name.split(' ')[0]}, saya ${me.name} (nelayan ARTANAYA, ${me.location}). Saya butuh bantuan soal: `)}>
+                Chat Fasilitator
               </Button>
-            </a>
+              <Button block variant="ghost" icon="upload" onClick={() => openWa(`Halo Mas ${f.name.split(' ')[0]}, saya ${me.name}. Saya ingin minta bantuan menyusun laporan progres usaha (foto & catatan hasil panen) untuk proyek saya di ARTANAYA.`)}>
+                Minta Bantuan Laporan
+              </Button>
+              <Button block variant="ghost" icon="help" onClick={() => openWa(`Halo Mas ${f.name.split(' ')[0]}, saya ${me.name}. Saya ingin minta pembinaan usaha dari fasilitator Karang Taruna agar skor kelayakan saya meningkat.`)}>
+                Minta Pembinaan Usaha
+              </Button>
+            </div>
           </Card>
         )}
         <section>
@@ -57,7 +64,7 @@ export function ProfileCommon() {
       <PageHeader title="Profil" />
       <div className="flex flex-col gap-5 px-5 pt-3">
         <Card className="flex items-center gap-4 p-5">
-          <Avatar initials={me.initials} />
+          <Avatar initials={me.initials} photo={me.photo} />
           <div className="min-w-0">
             <p className="text-lg font-bold">{me.name}</p>
             <p className="truncate text-sm text-ink-muted">{me.location}</p>

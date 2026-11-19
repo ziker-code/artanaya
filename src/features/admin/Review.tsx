@@ -1,3 +1,4 @@
+import { openWa } from '@/lib/wa'
 import { useShallow } from 'zustand/react/shallow'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
@@ -71,6 +72,10 @@ export function ReviewDetail() {
   const act = (action: 'publish' | 'coach') => {
     review(p.id, action, note || (action === 'coach' ? 'Dirujuk ke fasilitator untuk melengkapi data dan pembinaan usaha.' : ''))
     toast.ok(action === 'publish' ? `${p.id} tayang di marketplace investor` : `${p.id} dirujuk ke fasilitator`)
+    if (action === 'coach')
+      openWa(
+        `Halo fasilitator, mohon pendampingan untuk ${owner.name} (${owner.location}). Proyek ${p.id} · ${p.title} mendapat skor ${p.score.score} dan dirujuk untuk pembinaan.${note ? ` Catatan admin: ${note}` : ''}`,
+      )
     nav('/admin/tinjau')
   }
 

@@ -1,3 +1,5 @@
+import { openWa } from '@/lib/wa'
+import { useMoney } from '../profile/Profile'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { BottomSheet, Button, Card, Divider, EmptyState, HeroCard, ListRow, Notice, SectionHeader, TxRow } from '@/design'
@@ -8,6 +10,7 @@ import { KV, PageHeader, useAction } from '../shared'
 
 export function Wallet() {
   const me = useMe()!
+  const money = useMoney()
   const nav = useNavigate()
   const ledger = useStore((s) => s.ledger)
   const active = useStore((s) => s.projects.find((p) => p.ownerId === me.id && p.status === 'running'))
@@ -15,6 +18,7 @@ export function Wallet() {
   const pay = useStore((s) => s.payProfitShare)
   const w = walletOf(ledger, me.name)
   const avail = active?.stages.find((s) => s.status === 'available')
+  const pendingReport = active?.stages.find((s) => s.status === 'disbursed')
   const [sheet, setSheet] = useState<'cair' | 'setor' | null>(null)
 
   const [doCair, busyCair] = useAction(async () => {
@@ -34,10 +38,10 @@ export function Wallet() {
       <div className="flex flex-col gap-4 px-5 pt-3">
         <HeroCard>
           <p className="text-sm text-kelp-300">Dana diterima</p>
-          <p className="num mt-1 text-[34px] font-semibold tracking-tight">{formatRupiah(w.received)}</p>
+          <p className="num mt-1 text-[34px] font-semibold tracking-tight">{money(formatRupiah)(w.received)}</p>
           <p className="num text-sm text-kelp-300">sudah disetor kembali {formatRupiah(w.paid)}</p>
           <div className="mt-5 grid grid-cols-2 gap-2">
-            <Button size="sm" disabled={!avail} onClick={() => setSheet('cair')}>
+            <Button size="sm" onClick={() => setSheet('cair')}>
               Ajukan Pencairan
             </Button>
             <Button size="sm" variant="ghost" disabled={!active?.nextDue} onClick={() => setSheet('setor')}>
@@ -82,7 +86,7 @@ export function Wallet() {
         </section>
       </div>
 
-      <BottomSheet open={sheet === 'cair'} onOpenChange={(v) => !v && setSheet(null)} title={`Pencairan tahap ${avail?.n}`} description="Smart contract memeriksa laporan tahap sebelumnya sebelum dana dilepas.">
+      <BottomSheet open={sheet === 'cair'} onOpenChange={(v) => !v && setSheet(null)} title={avail ? `Pencairan tahap ${avail.n}` : 'Ajukan pencairan dana'} description="Smart contract memeriksa laporan tahap sebelumnya sebelum dana dilepas.">
         {avail && active && (
           <div className="flex flex-col gap-4">
             <Card className="divide-y divide-line px-4">
@@ -93,6 +97,48 @@ export function Wallet() {
             <Button block loading={busyCair} onClick={() => doCair()}>
               Cairkan Sekarang
             </Button>
+          </div>
+        )}
+        {!avail && (
+          <div className="flex flex-col gap-4">
+            {active ? (
+              <>
+                <Card className="divide-y divide-paper-sunk px-4">
+                  {active.stages.map((st) => (
+                    <KV
+                      key={st.n}
+                      k={`Tahap ${st.n} · ${st.label}`}
+                      v={st.status === 'reported' ? 'Selesai' : st.status === 'disbursed' ? 'Tunggu laporan' : st.status === 'available' ? 'Siap cair' : 'Terkunci'}
+                    />
+                  ))}
+                </Card>
+                <p className="text-sm text-ink-muted">
+                  {pendingReport
+                    ? `Tahap ${pendingReport.n + 1} terbuka setelah laporan progres tahap ${pendingReport.n} dikirim.`
+                    : 'Semua tahap sudah dicairkan. Pencairan berikutnya tersedia pada proyek baru.'}
+                </p>
+                {pendingReport && (
+                  <Button block icon="upload" onClick={() => nav(`/nelayan/proyek/${active.id}`)}>
+                    Kirim Laporan Progres
+                  </Button>
+                )}
+                <Button
+                  block
+                  variant="ghost"
+                  icon="whatsapp"
+                  onClick={() => openWa(`Halo Mas ${me.facilitator?.name.split(' ')[0] ?? ''}, saya ${me.name} (${active.id} · ${active.title}). Saya ingin mengajukan pencairan dana tahap berikutnya dan butuh bantuan menyiapkan laporan progres.`)}
+                >
+                  Minta Bantuan Fasilitator
+                </Button>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-ink-muted">Belum ada proyek berjalan. Pencairan bisa diajukan setelah proyek Bapak didanai penuh.</p>
+                <Button block icon="plus" onClick={() => nav('/nelayan/ajukan')}>
+                  Ajukan Proyek
+                </Button>
+              </>
+            )}
           </div>
         )}
       </BottomSheet>

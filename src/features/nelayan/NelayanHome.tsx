@@ -1,6 +1,8 @@
+import { useMoney } from '../profile/Profile'
+import { NotifBell } from '../notifications'
 import { useShallow } from 'zustand/react/shallow'
 import { useNavigate } from 'react-router'
-import { Badge, Button, CountUp, Divider, HeroCard, Icon, IconButton, Notice, Panel, ProgressBar, QuickAction, Reveal, SectionHeader, TxRow, type IconName } from '@/design'
+import { Badge, Button, CountUp, Divider, HeroCard, Icon, Notice, Panel, ProgressBar, QuickAction, Reveal, SectionHeader, TxRow, type IconName } from '@/design'
 import { useMe, useStore, walletOf } from '@/data/store'
 import { formatDate, formatRupiah } from '@/lib/format'
 import { EmptyState } from '@/design'
@@ -28,6 +30,7 @@ function greeting() {
 
 export function NelayanHome() {
   const me = useMe()!
+  const money = useMoney()
   const nav = useNavigate()
   const projects = useStore(useShallow((s) => s.projects.filter((p) => p.ownerId === me.id)))
   const ledger = useStore((s) => s.ledger)
@@ -47,12 +50,12 @@ export function NelayanHome() {
   return (
     <div className="px-5 pb-8 pt-6">
       <div className="mb-5 flex items-center gap-3 animate-[rise_.4s_var(--ease-out-soft)_both]">
-        <Avatar initials={me.initials} />
+        <Avatar initials={me.initials} photo={me.photo} />
         <div className="min-w-0 flex-1">
           <p className="text-2xs text-ink-muted">{greeting()}</p>
           <p className="truncate text-[19px] font-semibold leading-tight">Pak {me.name.split(' ')[0]} 👋</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" badge={!!active?.nextDue} />
+        <NotifBell role="nelayan" />
       </div>
 
       {active ? (
@@ -66,7 +69,7 @@ export function NelayanHome() {
             </div>
             <p className="text-2xs text-kelp-300">Dana terkumpul</p>
             <p className="num text-[30px] font-semibold leading-tight tracking-tight">
-              <CountUp value={active.raised} format={formatRupiah} />
+              <CountUp value={active.raised} format={money(formatRupiah)} />
             </p>
             <div className="mt-3">
               <ProgressBar value={(active.raised / active.target) * 100} onDark />

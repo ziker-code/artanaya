@@ -1,5 +1,6 @@
+import { NotifBell } from '../notifications'
 import { useNavigate } from 'react-router'
-import { Badge, CountUp, Divider, HeroCard, Icon, IconButton, ListRow, Panel, QuickAction, Reveal, SectionHeader } from '@/design'
+import { Badge, CountUp, Divider, HeroCard, Icon, ListRow, Panel, QuickAction, Reveal, SectionHeader } from '@/design'
 import { useStore } from '@/data/store'
 import { formatDate, formatRupiah, formatRupiahShort, shortHash } from '@/lib/format'
 import { Avatar } from '../shared'
@@ -25,7 +26,7 @@ export function AdminHome() {
           <p className="text-2xs text-ink-muted">Portal pengelola</p>
           <p className="truncate text-[19px] font-semibold leading-tight">Admin Utama</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" badge={openAlerts > 0} />
+        <NotifBell role="admin" />
       </div>
 
       <HeroCard side={<Icon name="link" size={24} />}>

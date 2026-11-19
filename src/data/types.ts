@@ -14,7 +14,33 @@ export type User = {
   kusuka?: string
   kub?: string
   facilitator?: { name: string; phone: string; org: string }
+  photo?: string
+  email?: string
+  prefs?: UserPrefs
   joinedAt: string
+}
+
+export type UserPrefs = {
+  notifWhatsapp: boolean
+  notifPush: boolean
+  loginAlert: boolean
+  twoStep: boolean
+  hideBalance: boolean
+}
+
+export type ForumComment = { id: string; authorId: string; authorName: string; authorRole: string; body: string; createdAt: string }
+
+export type ForumThread = {
+  id: string
+  authorId: string
+  authorName: string
+  authorRole: string
+  tag: string
+  title: string
+  body: string
+  createdAt: string
+  likes: string[]
+  comments: ForumComment[]
 }
 
 export type ProjectStatus = 'review' | 'coaching' | 'live' | 'running' | 'done'

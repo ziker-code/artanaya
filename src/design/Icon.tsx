@@ -31,6 +31,7 @@ import {
   Radar2,
   Reserve,
   Scanning,
+  Send2,
   SearchNormal1,
   Setting2,
   Ship,
@@ -94,6 +95,7 @@ const registry = {
   waves: Global,
   anchor: Drop,
   more: Element3,
+  send: Send2,
 } satisfies Record<string, IconsaxIcon>
 
 export type IconName = keyof typeof registry

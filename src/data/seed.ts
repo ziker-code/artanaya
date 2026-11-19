@@ -1,10 +1,16 @@
 import { computeScore, type SignalInput } from '@/lib/scoring'
 import { buildChain, type LedgerPayload } from '@/lib/ledger'
-import type { FraudAlert, Investment, Project, SecurityEvent, Stage, User } from './types'
+import type { ForumThread, FraudAlert, Investment, Project, SecurityEvent, Stage, User } from './types'
 
 const DAY = 86_400_000
 export const daysFromNow = (n: number) => new Date(Date.now() + n * DAY).toISOString()
 const ago = (n: number) => daysFromNow(-n)
+
+/** Nomor WhatsApp fasilitator / pusat bantuan (format internasional, tanpa +). */
+export const FACILITATOR_WA = '6285894302193'
+
+/** Naikkan bila bentuk/isi seed berubah, agar data bersama di Supabase diganti seed baru. */
+export const SEED_VERSION = 2
 
 export const DEMO = { nelayan: 'u-rudi', investor: 'u-dedi', admin: 'u-admin' } as const
 
@@ -12,16 +18,17 @@ export const users: User[] = [
   {
     id: 'u-rudi',
     role: 'nelayan',
-    name: 'Rudi Hartono',
-    initials: 'RH',
+    name: 'Davin',
+    initials: 'DV',
+    photo: '/avatars/davin.webp',
     location: 'Desa Gerupuk, Lombok Tengah',
     phone: '0812-3740-1186',
     kusuka: '5202 1408 7731 0042',
     kub: 'KUB Sagara Gerupuk',
-    facilitator: { name: 'Dimas Pratama', phone: '6281234567890', org: 'Karang Taruna Gerupuk' },
+    facilitator: { name: 'Dimas Pratama', phone: FACILITATOR_WA, org: 'Karang Taruna Gerupuk' },
     joinedAt: ago(140),
   },
-  { id: 'u-dedi', role: 'investor', name: 'Dedi Saputra', initials: 'DS', location: 'Bogor, Jawa Barat', phone: '0813-1192-5520', joinedAt: ago(96) },
+  { id: 'u-dedi', role: 'investor', name: 'Li Chiang', initials: 'LC', photo: '/avatars/li-chiang.png', location: 'Bogor, Jawa Barat', phone: '0813-1192-5520', joinedAt: ago(96) },
   { id: 'u-admin', role: 'admin', name: 'Admin Utama', initials: 'AU', location: 'Kantor ARTANAYA', phone: '-', joinedAt: ago(400) },
   { id: 'u-siti', role: 'nelayan', name: 'Siti Rahmawati', initials: 'SR', location: 'Pacitan, Jawa Timur', phone: '-', joinedAt: ago(220) },
   { id: 'u-yohanes', role: 'nelayan', name: 'Yohanes Lado', initials: 'YL', location: 'Semau, Kupang', phone: '-', joinedAt: ago(80) },
@@ -201,7 +208,7 @@ function spread(projectId: string, total: number, startDaysAgo: number, includeD
   let left = total
   let i = 0
   if (includeDedi) {
-    out.push({ id: `${projectId}-dedi`, projectId, investorId: 'u-dedi', investorName: 'Dedi Saputra', amount: includeDedi, createdAt: ago(startDaysAgo - 1) })
+    out.push({ id: `${projectId}-dedi`, projectId, investorId: 'u-dedi', investorName: 'Li Chiang', amount: includeDedi, createdAt: ago(startDaysAgo - 1) })
     left -= includeDedi
   }
   while (left > 0) {
@@ -267,6 +274,51 @@ export const securityEvents: SecurityEvent[] = [
   { id: 'SE-1', userId: 'u-dedi', title: 'Tautan “hadiah investasi” di WhatsApp', detail: 'Domain artanaya-bonus.xyz dikenali sebagai phishing', createdAt: ago(5), outcome: 'diblokir' },
 ]
 
+
+export const forum: ForumThread[] = [
+  {
+    id: 'TH-3',
+    authorId: 'x-fac',
+    authorName: 'Dimas Pratama',
+    authorRole: 'Fasilitator',
+    tag: 'Edukasi',
+    title: 'Cara mencatat hasil panen yang rapi untuk skor',
+    body: 'Timbang setelah kering, catat per tanggal, lalu foto timbangannya. Data ini masuk sinyal Produktivitas dan membuat skor lebih akurat.',
+    createdAt: ago(1),
+    likes: ['x-1', 'x-2', 'x-3'],
+    comments: [
+      { id: 'C-31', authorId: 'u-siti', authorName: 'Siti Rahmawati', authorRole: 'Nelayan', body: 'Kalau tangkapan dijual langsung di dermaga, dicatat berat kotor atau bersih, Mas?', createdAt: ago(0.8) },
+      { id: 'C-32', authorId: 'x-fac', authorName: 'Dimas Pratama', authorRole: 'Fasilitator', body: 'Berat bersih yang tertulis di nota pengepul, Bu. Fotonya ikut dilampirkan.', createdAt: ago(0.7) },
+    ],
+  },
+  {
+    id: 'TH-2',
+    authorId: 'u-siti',
+    authorName: 'Siti Rahmawati',
+    authorRole: 'Nelayan',
+    tag: 'Tanya jawab',
+    title: 'Bagaimana kalau cuaca ekstrem saat musim tangkap?',
+    body: 'Kapal kami sempat tidak melaut 9 hari. Apakah setoran bagi hasil bisa disesuaikan?',
+    createdAt: ago(3),
+    likes: ['x-4'],
+    comments: [
+      { id: 'C-21', authorId: 'x-7', authorName: 'Rina Maharani', authorRole: 'Investor', body: 'Setahu saya di akad mudharabah bagi hasil mengikuti hasil usaha riil, jadi kalau tidak melaut ya hasilnya memang turun.', createdAt: ago(2.5) },
+    ],
+  },
+  {
+    id: 'TH-1',
+    authorId: 'x-1',
+    authorName: 'Fajar Nugroho',
+    authorRole: 'Investor',
+    tag: 'Pengalaman',
+    title: 'Pengalaman 3 bulan mendanai budidaya rumput laut',
+    body: 'Laporan progres tiap tahap bikin tenang. Foto panen dikirim fasilitator langsung dari Gerupuk.',
+    createdAt: ago(6),
+    likes: ['x-2', 'x-5', 'x-6', 'x-8'],
+    comments: [],
+  },
+]
+
 /** Riwayat ledger awal: semua investasi seed + pencairan & bagi hasil PRJ-0021. */
 export function ledgerPayloads(): LedgerPayload[] {
   const p: LedgerPayload[] = investments.map((iv) => ({
@@ -278,8 +330,8 @@ export function ledgerPayloads(): LedgerPayload[] {
     memo: 'Penyertaan dana akad mudharabah',
     ts: iv.createdAt,
   }))
-  p.push({ type: 'pencairan', projectId: 'PRJ-0021', amount: 20_000_000, from: 'Escrow PRJ-0021', to: 'Rudi Hartono', memo: 'Pencairan tahap 1 — Bibit & tali', ts: ago(60) })
-  p.push({ type: 'setoran', projectId: 'PRJ-0021', amount: 1_250_000, from: 'Rudi Hartono', to: 'Escrow PRJ-0021', memo: 'Setoran bagi hasil Oktober', ts: ago(4) })
+  p.push({ type: 'pencairan', projectId: 'PRJ-0021', amount: 20_000_000, from: 'Escrow PRJ-0021', to: 'Davin', memo: 'Pencairan tahap 1 — Bibit & tali', ts: ago(60) })
+  p.push({ type: 'setoran', projectId: 'PRJ-0021', amount: 1_250_000, from: 'Davin', to: 'Escrow PRJ-0021', memo: 'Setoran bagi hasil Oktober', ts: ago(4) })
   p.push({ type: 'distribusi', projectId: 'PRJ-0021', amount: 1_250_000, from: 'Escrow PRJ-0021', to: 'Investor PRJ-0021 (proporsional)', memo: 'Distribusi bagi hasil Oktober ke investor', ts: ago(4) })
   return p.sort((a, b) => a.ts.localeCompare(b.ts))
 }
@@ -298,5 +350,7 @@ export async function buildSeed() {
     alerts,
     securityEvents,
     ledger,
+    forum: structuredClone(forum),
+    seedVersion: SEED_VERSION,
   }
 }

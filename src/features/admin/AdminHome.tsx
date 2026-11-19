@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router'
-import { Badge, Card, Divider, HeroCard, Icon, IconButton, ListRow, SectionHeader } from '@/design'
+import { Badge, CountUp, Divider, HeroCard, Icon, IconButton, ListRow, Panel, QuickAction, Reveal, SectionHeader } from '@/design'
 import { useStore } from '@/data/store'
-import { formatDate, formatRupiahShort, shortHash } from '@/lib/format'
+import { formatDate, formatRupiah, formatRupiahShort, shortHash } from '@/lib/format'
+import { Avatar } from '../shared'
 
 const TYPE_LABEL = { investasi: 'Investasi masuk', pencairan: 'Pencairan', setoran: 'Setoran bagi hasil', distribusi: 'Distribusi bagi hasil' } as const
 
@@ -18,39 +19,61 @@ export function AdminHome() {
 
   return (
     <div className="px-5 pb-8 pt-6">
-      <div className="mb-5 flex items-center gap-3">
-        <div className="flex-1">
-          <p className="text-sm text-ink-muted">Portal pengelola</p>
-          <p className="text-[22px] font-bold leading-tight">Admin Utama</p>
+      <div className="mb-5 flex items-center gap-3 animate-[rise_.4s_var(--ease-out-soft)_both]">
+        <Avatar initials="AU" />
+        <div className="min-w-0 flex-1">
+          <p className="text-2xs text-ink-muted">Portal pengelola</p>
+          <p className="truncate text-[19px] font-semibold leading-tight">Admin Utama</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" tone="soft" badge={openAlerts > 0} />
+        <IconButton icon="bell" label="Notifikasi" badge={openAlerts > 0} />
       </div>
 
-      <HeroCard>
-        <p className="text-sm text-kelp-300">Total dana kelolaan</p>
-        <p className="num mt-1 text-[34px] font-extrabold tracking-tight">{formatRupiahShort(managed)}</p>
-        <div className="mt-4 grid grid-cols-3 gap-2 border-t border-white/10 pt-4">
+      <HeroCard side={<Icon name="link" size={24} />}>
+        <div className="mb-5 flex items-center justify-between">
+          <span className="text-[15px] font-semibold tracking-wide">ARTANAYA</span>
+          <Badge tone="onDark" icon="shield-check">Sistem normal</Badge>
+        </div>
+        <p className="text-2xs text-kelp-300">Total dana kelolaan</p>
+        <p className="num text-[30px] font-semibold leading-tight tracking-tight">
+          <CountUp value={managed} format={formatRupiah} />
+        </p>
+        <div className="mt-4 grid grid-cols-3 gap-2 text-2xs">
           <Stat label="Proyek aktif" value={active} />
           <Stat label="Blok ledger" value={ledger.length} />
           <Stat label="Peringatan" value={openAlerts} warn={openAlerts > 0} />
         </div>
       </HeroCard>
 
+      <div className="mt-6 flex justify-between px-1">
+        {(
+          [
+            ['clipboard-check', 'Tinjau', '/admin/tinjau'],
+            ['link', 'Ledger', '/admin/ledger'],
+            ['radar', 'Radar AI', '/admin/radar'],
+            ['more', 'Profil', '/admin/profil'],
+          ] as const
+        ).map(([icon, label, to], i) => (
+          <Reveal key={label} i={i + 1}>
+            <QuickAction icon={icon} label={label} onClick={() => nav(to)} accent={i === 3} />
+          </Reveal>
+        ))}
+      </div>
+
       <section className="mt-6">
         <SectionHeader title="Tugas hari ini" />
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => nav('/admin/tinjau')} className="rounded-md border border-line bg-surface p-4 text-left transition-colors hover:border-kelp-300">
-            <span className="flex size-10 items-center justify-center rounded-full bg-sun-100 text-sun-600">
+          <button onClick={() => nav('/admin/tinjau')} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
+            <span className="flex size-11 items-center justify-center rounded-full bg-sun-500 text-kelp-950">
               <Icon name="clipboard-check" size={20} />
             </span>
-            <p className="num mt-3 text-2xl font-extrabold">{queue}</p>
+            <p className="num mt-3 text-2xl font-semibold">{queue}</p>
             <p className="text-sm text-ink-muted">pengajuan menunggu</p>
           </button>
-          <button onClick={() => nav('/admin/radar')} className="rounded-md border border-line bg-surface p-4 text-left transition-colors hover:border-kelp-300">
-            <span className="flex size-10 items-center justify-center rounded-full bg-coral-100 text-coral-700">
+          <button onClick={() => nav('/admin/radar')} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
+            <span className="flex size-11 items-center justify-center rounded-full bg-kelp-950 text-white">
               <Icon name="radar" size={20} />
             </span>
-            <p className="num mt-3 text-2xl font-extrabold">{openAlerts}</p>
+            <p className="num mt-3 text-2xl font-semibold">{openAlerts}</p>
             <p className="text-sm text-ink-muted">peringatan radar</p>
           </button>
         </div>
@@ -58,7 +81,7 @@ export function AdminHome() {
 
       <section className="mt-6">
         <SectionHeader title="Log sistem terbaru" />
-        <Card className="px-4">
+        <Panel>
           {recent.map((b, i) => (
             <div key={b.hash}>
               {i > 0 && <Divider />}
@@ -71,18 +94,12 @@ export function AdminHome() {
               />
             </div>
           ))}
-        </Card>
+        </Panel>
         <button onClick={() => nav('/admin/ledger')} className="mt-2 text-sm font-semibold text-kelp-700">
           Buka Ledger lengkap →
         </button>
       </section>
 
-      <div className="mt-6 flex items-center gap-2">
-        <Badge tone="kelp" icon="shield-check">
-          Sistem normal
-        </Badge>
-        <span className="text-2xs text-ink-muted">sinkron otomatis antar-tab</span>
-      </div>
     </div>
   )
 }
@@ -90,7 +107,7 @@ export function AdminHome() {
 function Stat({ label, value, warn }: { label: string; value: number; warn?: boolean }) {
   return (
     <div>
-      <p className={`num text-xl font-bold ${warn ? 'text-sun-300' : ''}`}>{value}</p>
+      <p className={`num text-lg font-semibold ${warn ? 'text-sun-300' : ''}`}>{value}</p>
       <p className="text-2xs text-kelp-300">{label}</p>
     </div>
   )

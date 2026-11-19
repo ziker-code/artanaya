@@ -1,10 +1,10 @@
 import { useShallow } from 'zustand/react/shallow'
 import { useNavigate } from 'react-router'
-import { Badge, Button, Card, Divider, HeroCard, Icon, IconButton, Notice, ProgressBar, SectionHeader, TxRow, type IconName } from '@/design'
+import { Badge, Button, CountUp, Divider, HeroCard, Icon, IconButton, Notice, Panel, ProgressBar, QuickAction, Reveal, SectionHeader, TxRow, type IconName } from '@/design'
 import { useMe, useStore, walletOf } from '@/data/store'
 import { formatDate, formatRupiah } from '@/lib/format'
 import { EmptyState } from '@/design'
-import { TYPE_ICON } from '../shared'
+import { Avatar, TYPE_ICON } from '../shared'
 
 function Insight({ volumes }: { volumes: number[] | null }) {
   if (!volumes || volumes.length < 2) return null
@@ -12,7 +12,7 @@ function Insight({ volumes }: { volumes: number[] | null }) {
   const diff = Math.round(((volumes.at(-1)! - avg) / avg) * 100)
   if (Math.abs(diff) < 3) return null
   return (
-    <p className="mt-8 text-center font-serif text-lg italic leading-snug text-kelp-700">
+    <p className="mt-6 rounded-md bg-kelp-950 px-5 py-4 text-center text-sm leading-snug text-sun-300">
       “Hasil bulan lalu {Math.abs(diff)}% {diff > 0 ? 'di atas' : 'di bawah'} rata-rata 6 bulan Bapak.”
     </p>
   )
@@ -37,55 +37,55 @@ export function NelayanHome() {
   const avail = active?.stages.find((s) => s.status === 'available')
   const needReport = active?.stages.find((s) => s.status === 'disbursed')
 
-  const quick: [IconName, string, () => void][] = [
-    ['plus', 'Ajukan Proyek', () => nav('/nelayan/ajukan')],
-    ['wallet', 'Dompetku', () => nav('/nelayan/dompet')],
-    ['upload', 'Lapor Progres', () => nav(active ? `/nelayan/proyek/${active.id}` : '/nelayan/proyek')],
+  const quick: [IconName, string, () => void, boolean?][] = [
+    ['plus', 'Ajukan', () => nav('/nelayan/ajukan')],
+    ['wallet', 'Dompet', () => nav('/nelayan/dompet')],
+    ['upload', 'Lapor', () => nav(active ? `/nelayan/proyek/${active.id}` : '/nelayan/proyek')],
+    ['more', 'Bantuan', () => nav('/nelayan/bantuan'), true],
   ]
 
   return (
     <div className="px-5 pb-8 pt-6">
-      <div className="mb-5 flex items-center gap-3">
-        <div className="flex-1">
-          <p className="text-sm text-ink-muted">{greeting()}</p>
-          <p className="text-[22px] font-bold leading-tight">Pak {me.name.split(' ')[0]}</p>
+      <div className="mb-5 flex items-center gap-3 animate-[rise_.4s_var(--ease-out-soft)_both]">
+        <Avatar initials={me.initials} />
+        <div className="min-w-0 flex-1">
+          <p className="text-2xs text-ink-muted">{greeting()}</p>
+          <p className="truncate text-[19px] font-semibold leading-tight">Pak {me.name.split(' ')[0]} 👋</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" tone="soft" badge={!!active?.nextDue} />
+        <IconButton icon="bell" label="Notifikasi" badge={!!active?.nextDue} />
       </div>
 
       {active ? (
-        <button className="block w-full text-left" onClick={() => nav(`/nelayan/proyek/${active.id}`)}>
-          <HeroCard>
-            <div className="mb-4 flex items-center justify-between">
+        <button className="press block w-full text-left" onClick={() => nav(`/nelayan/proyek/${active.id}`)}>
+          <HeroCard side={<Icon name="caret-right" size={24} />}>
+            <div className="mb-5 flex items-center justify-between gap-2">
+              <span className="text-[15px] font-semibold tracking-wide">{active.id}</span>
               <Badge tone="onDark" icon={TYPE_ICON[active.type]}>
-                {active.status === 'running' ? 'Proyek berjalan' : 'Menggalang dana'}
+                {active.status === 'running' ? 'Berjalan' : 'Menggalang'}
               </Badge>
-              <span className="num text-2xs text-kelp-300">{active.id}</span>
             </div>
-            <p className="text-lg font-semibold leading-snug">{active.title}</p>
-            <p className="mb-4 text-sm text-kelp-300">{active.location}</p>
-            <div className="mb-2 flex items-baseline justify-between">
-              <span className="num text-[28px] font-extrabold tracking-tight">{formatRupiah(active.raised)}</span>
-              <span className="num text-sm font-semibold text-sun-300">{Math.round((active.raised / active.target) * 100)}%</span>
-            </div>
-            <ProgressBar value={(active.raised / active.target) * 100} onDark />
-            <p className="mt-2 text-2xs text-kelp-300">
-              terkumpul dari target {formatRupiah(active.target)} · skor {active.score.score}
+            <p className="text-2xs text-kelp-300">Dana terkumpul</p>
+            <p className="num text-[30px] font-semibold leading-tight tracking-tight">
+              <CountUp value={active.raised} format={formatRupiah} />
             </p>
+            <div className="mt-3">
+              <ProgressBar value={(active.raised / active.target) * 100} onDark />
+            </div>
+            <div className="mt-3 flex items-end justify-between gap-2 text-2xs">
+              <span className="min-w-0 truncate text-white/85">{active.title}</span>
+              <span className="num shrink-0 text-kelp-300">skor {active.score.score}</span>
+            </div>
           </HeroCard>
         </button>
       ) : (
         <EmptyState icon="folder" title="Belum ada proyek aktif" body="Ajukan proyek pertama, prosesnya sekitar 10 menit." action={<Button size="sm" icon="plus" onClick={() => nav('/nelayan/ajukan')}>Ajukan Proyek</Button>} />
       )}
 
-      <div className="mt-4 grid grid-cols-3 gap-2">
-        {quick.map(([icon, label, go]) => (
-          <button key={label} onClick={go} className="flex flex-col items-center gap-2 rounded-md border border-line bg-surface px-2 py-4 transition-colors hover:bg-paper-sunk">
-            <span className="flex size-10 items-center justify-center rounded-full bg-kelp-100 text-kelp-700">
-              <Icon name={icon} size={20} />
-            </span>
-            <span className="text-2xs font-semibold leading-tight">{label}</span>
-          </button>
+      <div className="mt-6 flex justify-between px-1">
+        {quick.map(([icon, label, go, accent], i) => (
+          <Reveal key={label} i={i + 1}>
+            <QuickAction icon={icon} label={label} onClick={go} accent={accent} />
+          </Reveal>
         ))}
       </div>
 
@@ -113,8 +113,8 @@ export function NelayanHome() {
       </div>
 
       <div className="mt-6">
-        <SectionHeader title="Dompetku" action={<Button size="sm" variant="quiet" iconRight="caret-right" onClick={() => nav('/nelayan/dompet')}>Semua</Button>} />
-        <Card className="px-4">
+        <SectionHeader title="Aktivitas Terbaru" action={<Button size="sm" variant="quiet" iconRight="caret-right" onClick={() => nav('/nelayan/dompet')}>Semua</Button>} />
+        <Panel>
           {wallet.txs.slice(0, 3).map((t, i) => (
             <div key={t.hash}>
               {i > 0 && <Divider />}
@@ -122,7 +122,7 @@ export function NelayanHome() {
             </div>
           ))}
           {wallet.txs.length === 0 && <p className="py-4 text-sm text-ink-muted">Belum ada transaksi.</p>}
-        </Card>
+        </Panel>
       </div>
 
       {active && <Insight volumes={active.signals.volumes} />}

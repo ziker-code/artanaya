@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Navigate, Outlet, useLocation, useNavigate } from 'react-router'
+import { Navigate, useLocation, useNavigate, useOutlet } from 'react-router'
 import { BottomNav, DisclaimerBar, Skeleton, type NavItem } from '@/design'
 import { useStore } from '@/data/store'
 import { startSync } from '@/data/sync'
@@ -43,6 +43,7 @@ export function RoleShell({ role }: { role: Role }) {
   const me = useStore((s) => s.users.find((u) => u.id === s.sessionUserId))
   const loc = useLocation()
   const nav = useNavigate()
+  const outlet = useOutlet()
 
   if (!ready) {
     return (
@@ -62,10 +63,13 @@ export function RoleShell({ role }: { role: Role }) {
   const isRoot = depth === 1 || (depth === 2 && items.some((i) => i.key === seg))
 
   return (
-    <div className="min-h-dvh bg-paper-sunk/60">
-      <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-paper shadow-[0_0_0_1px_var(--color-line)]">
-        <main className="flex-1">
-          <Outlet />
+    <div className="min-h-dvh bg-[#bccbb2]">
+      <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden bg-paper">
+        <main className={isRoot ? 'flex-1 pb-28' : 'flex-1 pb-6'}>
+          {/* Animasi masuk halaman via CSS: konten berganti seketika, animasi tidak pernah menahan navigasi. */}
+          <div key={loc.pathname} className={isRoot ? 'animate-[page-in_.34s_var(--ease-out-soft)_both]' : 'animate-[page-push_.34s_var(--ease-out-soft)_both]'}>
+            {outlet}
+          </div>
           <DisclaimerBar />
         </main>
         {isRoot && <BottomNav items={items} active={active} onSelect={(k) => nav(`/${role}${k ? `/${k}` : ''}`)} />}

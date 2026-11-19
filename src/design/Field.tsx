@@ -21,8 +21,8 @@ export function TextField({ label, hint, error, icon, className, id, ...rest }: 
       </label>
       <div
         className={cn(
-          'flex h-12 items-center gap-2.5 rounded-sm border bg-paper-sunk px-3.5 transition-colors',
-          'focus-within:border-kelp-700 focus-within:bg-surface',
+          'flex h-13 items-center gap-2.5 rounded-full border-2 bg-white px-5 transition-colors',
+          'focus-within:border-kelp-950',
           error ? 'border-coral-600' : 'border-transparent',
         )}
       >
@@ -69,13 +69,13 @@ export function MoneyInput({ label, value, onChange, step = 1_000_000, min = 0, 
       <label htmlFor={id} className="text-sm font-semibold text-ink">
         {label}
       </label>
-      <div className="flex items-center gap-2 rounded-md bg-paper-sunk p-2">
+      <div className="flex items-center gap-2 rounded-full bg-white p-2">
         <button
           type="button"
           aria-label={`Kurangi ${formatRupiah(step)}`}
           onClick={() => onChange(clamp(value - step))}
           disabled={value <= min}
-          className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-surface text-ink transition-colors hover:bg-white disabled:opacity-40"
+          className="press flex size-12 shrink-0 items-center justify-center rounded-full bg-kelp-950 text-white disabled:opacity-40"
         >
           <Icon name="minus" size={20} />
         </button>
@@ -87,14 +87,14 @@ export function MoneyInput({ label, value, onChange, step = 1_000_000, min = 0, 
             const digits = Number(e.target.value.replace(/\D/g, ''))
             onChange(clamp(Number.isFinite(digits) ? digits : 0))
           }}
-          className="num w-full min-w-0 bg-transparent text-center text-2xl font-bold text-ink outline-none"
+          className="num w-full min-w-0 bg-transparent text-center text-2xl font-semibold text-ink outline-none"
         />
         <button
           type="button"
           aria-label={`Tambah ${formatRupiah(step)}`}
           onClick={() => onChange(clamp(value + step))}
           disabled={value >= max}
-          className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-sun-500 text-kelp-950 transition-colors hover:bg-sun-600 disabled:opacity-40"
+          className="press flex size-12 shrink-0 items-center justify-center rounded-full bg-sun-500 text-kelp-950 disabled:opacity-40"
         >
           <Icon name="plus" size={20} />
         </button>

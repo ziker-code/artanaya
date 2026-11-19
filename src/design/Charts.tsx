@@ -14,8 +14,8 @@ export function BarChart({ data, highlight, height = 120, format }: { data: Bar[
             <div key={d.label} className="flex h-full flex-1 flex-col justify-end">
               <div
                 title={format ? format(d.value) : String(d.value)}
-                className={cn('w-full rounded-[8px] transition-[height] duration-700 ease-out-soft', on ? 'bg-sun-500' : 'bg-kelp-200')}
-                style={{ height: `${Math.max(6, (d.value / max) * 100)}%` }}
+                className={cn('w-full origin-bottom rounded-full animate-[grow_.8s_var(--ease-out-soft)_both]', on ? 'bg-sun-500' : 'bg-kelp-950')}
+                style={{ height: `${Math.max(8, (d.value / max) * 100)}%`, animationDelay: `${i * 60}ms` }}
               />
             </div>
           )
@@ -37,15 +37,15 @@ export function Gauge({ value, label, caption }: { value: number; label: string;
   const r = 80
   const half = Math.PI * r
   const pct = Math.max(0, Math.min(100, value)) / 100
-  const tone = value >= 80 ? 'text-kelp-700' : value >= 50 ? 'text-sun-500' : 'text-coral-600'
+  const tone = value >= 80 ? 'text-sun-600' : value >= 50 ? 'text-kelp-900' : 'text-coral-600'
   return (
     <div className="flex flex-col items-center" role="img" aria-label={`${label}: ${value} dari 100`}>
       <svg viewBox="0 0 200 112" className="w-[220px]">
-        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" strokeWidth="14" strokeLinecap="round" className="stroke-paper-sunk" />
+        <path d="M20 100 A80 80 0 0 1 180 100" fill="none" strokeWidth="16" strokeLinecap="round" className="stroke-kelp-950/10" />
         <path
           d="M20 100 A80 80 0 0 1 180 100"
           fill="none"
-          strokeWidth="14"
+          strokeWidth="16"
           strokeLinecap="round"
           stroke="currentColor"
           className={cn(tone, 'transition-[stroke-dashoffset] duration-1000 ease-out-soft')}
@@ -72,16 +72,16 @@ export function ScoreBreakdown({ rows }: { rows: SignalRow[] }) {
         <li key={r.key}>
           <div className="mb-1.5 flex items-baseline justify-between gap-3">
             <span className="text-[15px] font-semibold text-ink">
-              <span className="mr-1.5 inline-flex size-6 items-center justify-center rounded-full bg-kelp-100 text-2xs font-bold text-kelp-700">{r.key}</span>
+              <span className="mr-1.5 inline-flex size-6 items-center justify-center rounded-full bg-kelp-950 text-2xs font-semibold text-sun-500">{r.key}</span>
               {r.name}
             </span>
             <span className="num text-sm text-ink-muted">
               {r.score === null ? 'belum ada data' : <><b className="text-ink">{r.score}</b>/100</>} · bobot {Math.round(r.weight * 100)}%
             </span>
           </div>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-paper-sunk">
+          <div className="h-2.5 w-full overflow-hidden rounded-full bg-kelp-950/10">
             <div
-              className={cn('h-full rounded-full', r.score === null ? 'bg-transparent' : r.score >= 70 ? 'bg-kelp-700' : r.score >= 50 ? 'bg-sun-500' : 'bg-coral-600')}
+              className={cn('h-full rounded-full', r.score === null ? 'bg-transparent' : r.score >= 70 ? 'bg-sun-500' : r.score >= 50 ? 'bg-kelp-950' : 'bg-coral-600')}
               style={{ width: `${r.score ?? 0}%` }}
             />
           </div>

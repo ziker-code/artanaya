@@ -70,7 +70,7 @@ export function Styleguide() {
       <main className="flex min-w-0 flex-col gap-10">
         <header className="flex flex-col gap-3">
           <Wordmark />
-          <h1 className="text-[36px] font-extrabold leading-[1.1] tracking-tight sm:text-[44px]">
+          <h1 className="text-[36px] font-semibold leading-[1.1] tracking-tight sm:text-[44px]">
             Sistem desain{' '}
             <em className="font-serif text-[1.1em] font-normal italic text-kelp-700">buku catatan nelayan</em>
           </h1>
@@ -85,7 +85,7 @@ export function Styleguide() {
             {swatches.map((s) => (
               <div key={s.name} className="overflow-hidden rounded-md border border-line bg-surface">
                 <div className="flex h-20 items-end p-3" style={{ background: s.hex }}>
-                  <span className={`num text-2xs font-semibold ${s.dark ? 'text-paper' : 'text-ink'}`}>{s.hex}</span>
+                  <span className={`num text-2xs font-semibold ${s.dark ? 'text-white' : 'text-ink'}`}>{s.hex}</span>
                 </div>
                 <div className="p-3">
                   <p className="text-sm font-bold">{s.name}</p>
@@ -98,7 +98,7 @@ export function Styleguide() {
 
         <Block id="tipografi" title="Tipografi" note="Plus Jakarta Sans (Tokotype, Jakarta) untuk UI. Instrument Serif miring hanya untuk satu kalimat insight per layar.">
           <Card className="flex flex-col gap-4 p-6">
-            <p className="num text-[44px] font-extrabold leading-none tracking-tight">{formatRupiah(32_400_000)}</p>
+            <p className="num text-[44px] font-semibold leading-none tracking-tight">{formatRupiah(32_400_000)}</p>
             <p className="text-[28px] font-bold tracking-tight">Ajukan modal usaha</p>
             <p className="text-[22px] font-bold">Riwayat pencairan</p>
             <p className="text-lg font-semibold">Budidaya Rumput Laut Sagara</p>
@@ -304,7 +304,7 @@ function PhonePreview() {
             <p className="text-lg font-semibold leading-snug">Budidaya Rumput Laut Sagara</p>
             <p className="mb-4 text-sm text-kelp-300">Desa Gerupuk, Lombok Tengah</p>
             <div className="mb-2 flex items-baseline justify-between">
-              <span className="num text-[28px] font-extrabold tracking-tight">{formatRupiah(32_400_000)}</span>
+              <span className="num text-[28px] font-semibold tracking-tight">{formatRupiah(32_400_000)}</span>
               <span className="num text-sm font-semibold text-sun-300">68%</span>
             </div>
             <ProgressBar value={68} onDark />

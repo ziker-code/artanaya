@@ -1,15 +1,16 @@
 import type { ReactNode } from 'react'
 import { Tabs as RTabs } from 'radix-ui'
+import { motion } from 'motion/react'
 import { cn } from '@/lib/cn'
 import { Icon, type IconName } from './Icon'
 import { IconButton } from './Button'
 
 export function TopBar({ title, onBack, trailing, subtitle }: { title: string; subtitle?: string; onBack?: () => void; trailing?: ReactNode }) {
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-1 bg-paper/90 px-2 backdrop-blur-md">
-      {onBack ? <IconButton icon="caret-left" label="Kembali" onClick={onBack} /> : <span className="w-3" />}
+    <header className="sticky top-0 z-20 flex h-[72px] items-center gap-3 bg-paper/85 px-5 backdrop-blur-md">
+      {onBack ? <IconButton icon="caret-left" label="Kembali" onClick={onBack} /> : null}
       <div className="min-w-0 flex-1">
-        <h1 className="truncate text-[17px] font-bold text-ink">{title}</h1>
+        <h1 className="truncate text-[17px] font-semibold text-ink">{title}</h1>
         {subtitle && <p className="truncate text-2xs text-ink-muted">{subtitle}</p>}
       </div>
       {trailing}
@@ -19,23 +20,33 @@ export function TopBar({ title, onBack, trailing, subtitle }: { title: string; s
 
 export type NavItem = { key: string; label: string; icon: IconName }
 
-/** Bottom nav: ikon Fill + titik kuning untuk tab aktif. Label selalu tampil. */
+/**
+ * Bottom nav melayang: pil hitam, tab aktif = lingkaran lime yang bergeser (animasi layout).
+ * Label tampil untuk tab aktif agar tetap jelas bagi pengguna baru.
+ */
 export function BottomNav({ items, active, onSelect }: { items: NavItem[]; active: string; onSelect: (key: string) => void }) {
   return (
-    <nav aria-label="Navigasi utama" className="sticky bottom-0 z-20 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
-      <ul className="flex">
+    <nav aria-label="Navigasi utama" className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-[480px] px-6 pb-[calc(14px+env(safe-area-inset-bottom))]">
+      <ul className="pointer-events-auto mx-auto flex w-fit items-center gap-1 rounded-full bg-kelp-950 p-1.5 shadow-float">
         {items.map((it) => {
           const on = it.key === active
           return (
-            <li key={it.key} className="flex-1">
+            <li key={it.key}>
               <button
                 onClick={() => onSelect(it.key)}
                 aria-current={on ? 'page' : undefined}
-                className={cn('flex h-16 w-full flex-col items-center justify-center gap-0.5 transition-colors', on ? 'text-kelp-900' : 'text-ink-muted hover:text-ink')}
+                aria-label={it.label}
+                className={cn('press relative flex h-12 items-center justify-center rounded-full', on ? 'px-4 text-kelp-950' : 'w-12 text-white/75 hover:text-white')}
               >
-                <Icon name={it.icon} size={24} filled={on} />
-                <span className={cn('text-[11px] leading-4', on ? 'font-bold' : 'font-medium')}>{it.label}</span>
-                <span className={cn('size-1 rounded-full', on ? 'bg-sun-500' : 'bg-transparent')} />
+                {on && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-full bg-sun-500" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+                <span className="relative flex items-center gap-1.5">
+                  <Icon name={it.icon} size={22} filled={on} />
+                  {on && (
+                    <motion.span initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: 'auto' }} className="overflow-hidden whitespace-nowrap text-[13px] font-semibold">
+                      {it.label}
+                    </motion.span>
+                  )}
+                </span>
               </button>
             </li>
           )
@@ -45,18 +56,19 @@ export function BottomNav({ items, active, onSelect }: { items: NavItem[]; activ
   )
 }
 
-/** Segmented control untuk filter/tab ringan. */
+/** Pemilih segmen: pil putih, segmen aktif lime (seperti Today / Weekly / Monthly). */
 export function Segmented({ options, value, onChange, label }: { options: { value: string; label: string }[]; value: string; onChange: (v: string) => void; label: string }) {
   return (
     <RTabs.Root value={value} onValueChange={onChange}>
-      <RTabs.List aria-label={label} className="flex gap-1 rounded-sm bg-paper-sunk p-1">
+      <RTabs.List aria-label={label} className="flex gap-2">
         {options.map((o) => (
           <RTabs.Trigger
             key={o.value}
             value={o.value}
-            className="h-9 flex-1 rounded-[7px] px-3 text-sm font-semibold text-ink-muted transition-colors data-[state=active]:bg-surface data-[state=active]:text-ink data-[state=active]:shadow-[0_1px_2px_rgb(15_42_33/0.12)]"
+            className="press relative h-11 flex-1 rounded-full bg-white px-4 text-sm font-medium text-ink data-[state=active]:font-semibold"
           >
-            {o.label}
+            {o.value === value && <motion.span layoutId={`seg-${label}`} className="absolute inset-0 rounded-full bg-sun-500" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
+            <span className="relative">{o.label}</span>
           </RTabs.Trigger>
         ))}
       </RTabs.List>
@@ -76,10 +88,7 @@ export function ChipRow({ options, value, onChange }: { options: string[]; value
             role="radio"
             aria-checked={on}
             onClick={() => onChange(o)}
-            className={cn(
-              'h-9 shrink-0 rounded-full border px-4 text-sm font-semibold transition-colors',
-              on ? 'border-kelp-900 bg-kelp-900 text-paper' : 'border-line bg-surface text-ink hover:bg-paper-sunk',
-            )}
+            className={cn('press h-10 shrink-0 rounded-full px-4 text-sm font-medium', on ? 'bg-kelp-950 text-white' : 'bg-white text-ink hover:bg-surface')}
           >
             {o}
           </button>

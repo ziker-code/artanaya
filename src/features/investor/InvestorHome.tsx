@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Card, ChipRow, HeroCard, Icon, IconButton, SectionHeader } from '@/design'
+import { Badge, Card, ChipRow, CountUp, HeroCard, Icon, IconButton, QuickAction, Reveal, SectionHeader } from '@/design'
 import { investorReturns, useMe, useStore } from '@/data/store'
 import { BUSINESS_LABEL, type BusinessType } from '@/lib/scoring.config'
 import { formatRupiah, formatRupiahShort } from '@/lib/format'
-import { ProjectCard } from '../shared'
+import { Avatar, ProjectCard } from '../shared'
 
 const FILTERS = ['Semua', ...Object.values(BUSINESS_LABEL)]
 
@@ -28,50 +28,68 @@ export function InvestorHome() {
 
   return (
     <div className="px-5 pb-8 pt-6">
-      <div className="mb-5 flex items-center gap-3">
-        <div className="flex-1">
-          <p className="text-sm text-ink-muted">Halo,</p>
-          <p className="text-[22px] font-bold leading-tight">{me.name}</p>
+      <div className="mb-5 flex items-center gap-3 animate-[rise_.4s_var(--ease-out-soft)_both]">
+        <Avatar initials={me.initials} />
+        <div className="min-w-0 flex-1">
+          <p className="text-2xs text-ink-muted">{me.name}</p>
+          <p className="truncate text-[19px] font-semibold leading-tight">Selamat datang 👋</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" tone="soft" />
+        <IconButton icon="bell" label="Notifikasi" />
       </div>
 
-      <HeroCard>
-        <p className="text-sm text-kelp-300">Total investasi maritim</p>
-        <p className="num mt-1 text-[32px] font-extrabold tracking-tight">{formatRupiah(total)}</p>
-        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4">
-          <div>
-            <p className="num text-lg font-bold text-sun-300">+{formatRupiahShort(returns)}</p>
-            <p className="text-2xs text-kelp-300">bagi hasil diterima</p>
-          </div>
-          <div>
-            <p className="num text-lg font-bold">{projectsFunded}</p>
-            <p className="text-2xs text-kelp-300">proyek didanai</p>
-          </div>
+      <HeroCard side={<Icon name="shield-check" size={24} />}>
+        <div className="mb-5 flex items-center justify-between">
+          <span className="text-[15px] font-semibold tracking-wide">ARTANAYA</span>
+          <Badge tone="onDark">{projectsFunded} proyek</Badge>
+        </div>
+        <p className="text-2xs text-kelp-300">Total investasi maritim</p>
+        <p className="num text-[30px] font-semibold leading-tight tracking-tight">
+          <CountUp value={total} format={formatRupiah} />
+        </p>
+        <div className="mt-4 flex items-end justify-between text-2xs">
+          <span className="text-white/85">Bagi hasil diterima</span>
+          <span className="num font-semibold text-sun-300">+{formatRupiahShort(returns)}</span>
         </div>
       </HeroCard>
 
-      <button onClick={() => nav('/investor/radar')} className="mt-3 flex w-full items-center gap-3 rounded-md border border-line bg-surface p-3.5 text-left transition-colors hover:bg-paper-sunk">
-        <span className="flex size-9 items-center justify-center rounded-full bg-kelp-100 text-kelp-700">
+      <div className="mt-6 flex justify-between px-1">
+        {(
+          [
+            ['chart-bar', 'Portofolio', '/investor/portofolio'],
+            ['shield-check', 'Radar', '/investor/radar'],
+            ['chats', 'Komunitas', '/investor/komunitas'],
+            ['more', 'Profil', '/investor/profil'],
+          ] as const
+        ).map(([icon, label, to], i) => (
+          <Reveal key={label} i={i + 1}>
+            <QuickAction icon={icon} label={label} onClick={() => nav(to)} accent={i === 3} />
+          </Reveal>
+        ))}
+      </div>
+
+      <button onClick={() => nav('/investor/radar')} className="press mt-5 flex w-full items-center gap-3 rounded-md bg-surface p-3.5 text-left">
+        <span className="flex size-10 items-center justify-center rounded-full bg-kelp-950 text-sun-500">
           <Icon name="shield-check" size={20} />
         </span>
         <span className="flex-1 text-sm">
-          <b>Akun terlindungi</b>
-          <span className="block text-ink-muted">{openThreats} ancaman diblokir otomatis bulan ini</span>
+          <b className="font-semibold">Akun terlindungi</b>
+          <span className="block text-2xs text-ink-muted">{openThreats} ancaman diblokir otomatis bulan ini</span>
         </span>
-        <Icon name="caret-right" className="text-ink-faint" />
+        <Icon name="caret-right" size={18} className="text-ink-faint" />
       </button>
 
       <section className="mt-6">
         <SectionHeader title="Proyek menggalang dana" />
-        <label className="mb-3 flex h-12 items-center gap-2.5 rounded-sm bg-paper-sunk px-3.5 focus-within:bg-surface focus-within:ring-1 focus-within:ring-kelp-700">
+        <label className="mb-3 flex h-13 items-center gap-2.5 rounded-full bg-white px-5 focus-within:ring-2 focus-within:ring-kelp-950">
           <Icon name="search" className="text-ink-muted" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Cari proyek atau lokasi" className="w-full bg-transparent outline-none placeholder:text-ink-faint" aria-label="Cari proyek" />
         </label>
         <ChipRow options={FILTERS} value={filter} onChange={setFilter} />
         <div className="mt-4 flex flex-col gap-3">
-          {live.map((p) => (
-            <ProjectCard key={p.id} p={p} onOpen={() => nav(`/investor/proyek/${p.id}`)} />
+          {live.map((p, i) => (
+            <Reveal key={p.id} i={i}>
+              <ProjectCard p={p} onOpen={() => nav(`/investor/proyek/${p.id}`)} />
+            </Reveal>
           ))}
           {live.length === 0 && (
             <Card className="p-6 text-center text-sm text-ink-muted">Tidak ada proyek yang cocok dengan filter ini.</Card>

@@ -49,7 +49,7 @@ export function Ledger() {
             <span className="num text-2xs text-kelp-300">{ledger.length} blok</span>
           </div>
           <p className="mt-4 text-sm text-kelp-300">Hash blok terakhir</p>
-          <p className="mt-1 break-all font-mono text-[13px] leading-snug text-paper">{ledger.at(-1)?.hash}</p>
+          <p className="mt-1 break-all font-mono text-[13px] leading-snug text-white">{ledger.at(-1)?.hash}</p>
           <Button className="mt-5" block loading={checking} icon="shield-check" onClick={verify}>
             Verifikasi Rantai
           </Button>
@@ -70,7 +70,7 @@ export function Ledger() {
           </div>
         )}
 
-        <details className="rounded-md border border-dashed border-line p-4 text-sm">
+        <details className="rounded-md bg-white/60 p-4 text-sm">
           <summary className="cursor-pointer font-semibold text-ink-muted">Mode demo juri</summary>
           <p className="mt-2 text-ink-muted">Ubah nominal satu blok langsung di database tanpa menghitung ulang hash, lalu tekan “Verifikasi Rantai”.</p>
           <Button

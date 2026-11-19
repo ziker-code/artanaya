@@ -25,11 +25,13 @@ function Item({ t }: { t: Toast }) {
     <div
       role="status"
       className={cn(
-        'pointer-events-auto flex items-start gap-2.5 rounded-md px-4 py-3 text-sm font-semibold shadow-float animate-[sheet-up_280ms_var(--ease-out-soft)]',
-        t.tone === 'ok' ? 'bg-kelp-900 text-paper' : 'bg-coral-600 text-white',
+        'pointer-events-auto flex items-center gap-3 rounded-full py-2 pl-2 pr-5 text-sm font-medium shadow-float animate-[drop_360ms_var(--ease-out-soft)]',
+        t.tone === 'ok' ? 'bg-kelp-950 text-white' : 'bg-coral-600 text-white',
       )}
     >
-      <Icon name={t.tone === 'ok' ? 'check' : 'warning'} size={20} className="mt-px shrink-0" />
+      <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full', t.tone === 'ok' ? 'bg-sun-500 text-kelp-950' : 'bg-white/20 text-white')}>
+        <Icon name={t.tone === 'ok' ? 'check' : 'warning'} size={20} />
+      </span>
       <span>{t.text}</span>
     </div>
   )

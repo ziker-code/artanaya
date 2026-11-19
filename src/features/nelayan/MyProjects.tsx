@@ -20,7 +20,7 @@ export function MyProjects() {
       <div className="flex flex-col gap-3 px-5 pt-3">
         {projects.length === 0 && <EmptyState icon="folder" title="Belum ada proyek" />}
         {projects.map((p) => (
-          <button key={p.id} onClick={() => nav(`/nelayan/proyek/${p.id}`)} className="rounded-md border border-line bg-surface p-4 text-left transition-colors hover:border-kelp-300">
+          <button key={p.id} onClick={() => nav(`/nelayan/proyek/${p.id}`)} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
             <div className="mb-2 flex items-center justify-between gap-2">
               <span className="num text-2xs font-semibold text-ink-muted">{p.id}</span>
               <StatusBadge status={p.status} />
@@ -41,7 +41,7 @@ export function MyProjects() {
 const stageTone: Record<Stage['status'], string> = {
   locked: 'bg-paper-sunk text-ink-faint',
   available: 'bg-sun-500 text-kelp-950',
-  disbursed: 'bg-kelp-700 text-paper',
+  disbursed: 'bg-kelp-700 text-white',
   reported: 'bg-kelp-100 text-kelp-700',
 }
 const stageLabel: Record<Stage['status'], string> = {
@@ -74,7 +74,7 @@ export function ProjectDetailNelayan() {
       <div className="flex flex-col gap-5 px-5">
         <ProjectCover type={p.type} id={p.id} className="rounded-lg p-5">
           <StatusBadge status={p.status} />
-          <p className="num mt-6 text-[28px] font-extrabold">{formatRupiah(p.raised)}</p>
+          <p className="num mt-6 text-[28px] font-semibold">{formatRupiah(p.raised)}</p>
           <p className="text-sm text-white/80">terkumpul dari {formatRupiah(p.target)}</p>
           <div className="mt-3">
             <ProgressBar value={(p.raised / p.target) * 100} onDark />
@@ -98,7 +98,7 @@ export function ProjectDetailNelayan() {
             <p className="mb-3 text-sm text-ink-muted">Aturan akad: tahap berikutnya terbuka setelah laporan progres tahap sebelumnya dikirim.</p>
             <ol className="flex flex-col gap-2">
               {p.stages.map((s) => (
-                <li key={s.n} className="flex items-center gap-3 rounded-md border border-line bg-surface p-4">
+                <li key={s.n} className="flex items-center gap-3 press rounded-md bg-surface p-4">
                   <span className={cn('num flex size-9 shrink-0 items-center justify-center rounded-full text-sm font-bold', stageTone[s.status])}>
                     {s.status === 'reported' ? <Icon name="check" size={16} /> : s.n}
                   </span>
@@ -141,7 +141,7 @@ export function ProjectDetailNelayan() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="mis. 2.000 ikat bibit sudah ditanam di 40 tali, pertumbuhan baik."
-            className="rounded-sm border border-transparent bg-paper-sunk p-3.5 text-base outline-none focus:border-kelp-700 focus:bg-surface"
+            className="rounded-[22px] border-2 border-transparent bg-white p-4 text-base outline-none focus:border-kelp-950"
           />
           <Button
             block

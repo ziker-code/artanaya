@@ -1,3 +1,4 @@
+import { openWa } from '@/lib/wa'
 import { useShallow } from 'zustand/react/shallow'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
@@ -91,6 +92,11 @@ export function ProjectDetailNelayan() {
             {p.reviewNote || `${me.facilitator?.name} akan membantu melengkapi data sebelum diajukan ulang.`}
           </Notice>
         )}
+        {p.status === 'coaching' && (
+          <Button block variant="secondary" icon="whatsapp" onClick={() => openWa(`Halo Mas ${me.facilitator?.name.split(' ')[0] ?? ''}, saya ${me.name}. Proyek saya ${p.id} (${p.title}) dirujuk untuk pembinaan dengan skor ${p.score.score}. Kapan kita bisa bertemu untuk melengkapi data?`)}>
+            Hubungi Fasilitator
+          </Button>
+        )}
 
         {(p.status === 'running' || p.status === 'live') && (
           <section>
@@ -154,6 +160,16 @@ export function ProjectDetailNelayan() {
             }}
           >
             Kirim Laporan
+          </Button>
+          <Button
+            block
+            variant="ghost"
+            icon="whatsapp"
+            onClick={() => openWa(`Halo Mas ${me.facilitator?.name.split(' ')[0] ?? ''}, saya ${me.name}. Berikut laporan progres tahap ${reportFor?.n} (${reportFor?.label}) proyek ${p.id} · ${p.title}: ${text || '…'}
+
+Foto lapangan saya lampirkan di chat ini.`)}
+          >
+            Kirim Foto via Fasilitator
           </Button>
         </div>
       </BottomSheet>

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { loadRemote, remoteEnabled, saveRemote, subscribeRemote } from './remote'
 import { useStore } from './store'
+import { SEED_VERSION } from './seed'
 
 /**
  * Menyambungkan store lokal ke Supabase:
@@ -12,7 +13,7 @@ import { useStore } from './store'
 type SyncStatus = 'local' | 'connecting' | 'online' | 'error'
 export const useSyncStatus = create<{ status: SyncStatus }>(() => ({ status: remoteEnabled ? 'connecting' : 'local' }))
 
-const SYNCED = ['users', 'projects', 'investments', 'alerts', 'securityEvents', 'ledger', 'selfLocked', 'tamper'] as const
+const SYNCED = ['users', 'projects', 'investments', 'alerts', 'securityEvents', 'ledger', 'forum', 'notifRead', 'seedVersion', 'selfLocked', 'tamper'] as const
 type Synced = Pick<ReturnType<typeof useStore.getState>, (typeof SYNCED)[number]>
 
 const pick = (s: ReturnType<typeof useStore.getState>): Synced =>
@@ -37,10 +38,11 @@ export async function startSync() {
   try {
     await useStore.getState().init()
     const row = await loadRemote<Synced>()
-    if (row && Array.isArray(row.data?.projects) && row.data.projects.length) {
+    // Data server dari versi seed lama (nama/forum lama) diganti seed terbaru.
+    if (row && Array.isArray(row.data?.projects) && row.data.projects.length && row.data.seedVersion === SEED_VERSION) {
       apply(row.data, row.version)
     } else {
-      version = 1
+      version = (row?.version ?? 0) + 1
       await saveRemote(pick(useStore.getState()), version)
     }
     setStatus('online')
@@ -68,6 +70,7 @@ export async function startSync() {
 
   subscribeRemote<Synced>((row) => {
     if (row.version <= version) return
+    if (row.data.seedVersion !== SEED_VERSION) return
     apply(row.data, row.version)
   })
 }

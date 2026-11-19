@@ -1,3 +1,4 @@
+import { openWa } from '@/lib/wa'
 import { useState } from 'react'
 import { Badge, BottomSheet, Button, Card, EmptyState, Icon, type IconName } from '@/design'
 import { useStore } from '@/data/store'
@@ -111,6 +112,8 @@ export function FraudRadar() {
               onClick={() => {
                 resolve(target!.id, 'actioned', label)
                 toast.ok(`${label} — tercatat di log keamanan`)
+                if (label === 'Hubungi lewat fasilitator')
+                  openWa(`Halo fasilitator, Radar Penipuan ARTANAYA menandai: ${target!.title} — ${target!.subject}. ${target!.detail} Mohon bantu konfirmasi langsung ke pengguna.`)
                 setTarget(null)
               }}
             >

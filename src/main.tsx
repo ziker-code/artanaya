@@ -9,7 +9,9 @@ import { NelayanHome } from '@/features/nelayan/NelayanHome'
 import { SubmitProject } from '@/features/nelayan/SubmitProject'
 import { MyProjects, ProjectDetailNelayan } from '@/features/nelayan/MyProjects'
 import { Wallet } from '@/features/nelayan/Wallet'
-import { NelayanHelp, ProfileCommon } from '@/features/nelayan/HelpProfile'
+import { NelayanHelp } from '@/features/nelayan/HelpProfile'
+import { ProfileData, ProfileHome, ProfileSecurity, ProfileSettings } from '@/features/profile/Profile'
+import { NotificationsPage } from '@/features/notifications'
 import { AdminHome } from '@/features/admin/AdminHome'
 import { ReviewDetail, ReviewList } from '@/features/admin/Review'
 import { Ledger } from '@/features/admin/Ledger'
@@ -18,7 +20,7 @@ import { InvestorHome } from '@/features/investor/InvestorHome'
 import { Prospectus } from '@/features/investor/Prospectus'
 import { Portfolio } from '@/features/investor/Portfolio'
 import { SecurityRadar } from '@/features/investor/SecurityRadar'
-import { Community } from '@/features/investor/Community'
+import { Community, ThreadDetail } from '@/features/investor/Community'
 const Styleguide = lazy(() => import('@/pages/Styleguide').then((m) => ({ default: m.Styleguide })))
 
 const router = createBrowserRouter([
@@ -33,7 +35,11 @@ const router = createBrowserRouter([
       { path: 'proyek/:id', element: <ProjectDetailNelayan /> },
       { path: 'dompet', element: <Wallet /> },
       { path: 'bantuan', element: <NelayanHelp /> },
-      { path: 'profil', element: <ProfileCommon /> },
+      { path: 'profil', element: <ProfileHome /> },
+      { path: 'profil/data', element: <ProfileData /> },
+      { path: 'profil/keamanan', element: <ProfileSecurity /> },
+      { path: 'profil/pengaturan', element: <ProfileSettings /> },
+      { path: 'notifikasi', element: <NotificationsPage role="nelayan" /> },
     ],
   },
   {
@@ -45,7 +51,12 @@ const router = createBrowserRouter([
       { path: 'portofolio', element: <Portfolio /> },
       { path: 'komunitas', element: <Community /> },
       { path: 'radar', element: <SecurityRadar /> },
-      { path: 'profil', element: <ProfileCommon /> },
+      { path: 'profil', element: <ProfileHome /> },
+      { path: 'profil/data', element: <ProfileData /> },
+      { path: 'profil/keamanan', element: <ProfileSecurity /> },
+      { path: 'profil/pengaturan', element: <ProfileSettings /> },
+      { path: 'notifikasi', element: <NotificationsPage role="investor" /> },
+      { path: 'komunitas/:id', element: <ThreadDetail /> },
     ],
   },
   {
@@ -57,7 +68,11 @@ const router = createBrowserRouter([
       { path: 'tinjau/:id', element: <ReviewDetail /> },
       { path: 'ledger', element: <Ledger /> },
       { path: 'radar', element: <FraudRadar /> },
-      { path: 'profil', element: <ProfileCommon /> },
+      { path: 'profil', element: <ProfileHome /> },
+      { path: 'profil/data', element: <ProfileData /> },
+      { path: 'profil/keamanan', element: <ProfileSecurity /> },
+      { path: 'profil/pengaturan', element: <ProfileSettings /> },
+      { path: 'notifikasi', element: <NotificationsPage role="admin" /> },
     ],
   },
   { path: '/styleguide', element: <Suspense fallback={null}><Styleguide /></Suspense> },

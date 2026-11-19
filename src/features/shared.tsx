@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { Badge, Icon, ProgressBar, ScoreDial, Sparkle, type IconName } from '@/design'
+import { Badge, Icon, ProgressBar, ScoreDial, type IconName } from '@/design'
 import type { Project, ProjectStatus } from '@/data/types'
 import { BUSINESS_LABEL, type BusinessType } from '@/lib/scoring.config'
 import { formatRupiah } from '@/lib/format'
@@ -20,22 +20,36 @@ const TYPE_BG: Record<BusinessType, string> = {
   olahan: 'bg-kelp-950',
 }
 
-/** Sampul proyek bergaya ilustrasi garis — pengganti foto stok. */
+const PROJECT_PHOTO: Record<string, string> = {
+  'PRJ-0021': 'rumput-laut-sagara',
+  'PRJ-0027': 'rumput-laut-semau',
+  'PRJ-0024': 'kapal-tuna',
+  'PRJ-0033': 'jaring-mesin-perahu',
+  'PRJ-0029': 'garam',
+  'PRJ-0031': 'abon-tenggiri',
+  'PRJ-0034': 'keramba-kerapu',
+}
+const TYPE_PHOTO: Record<BusinessType, string> = {
+  budidaya: 'rumput-laut-sagara',
+  tangkap: 'tangkap-umum',
+  garam: 'garam-umum',
+  olahan: 'olahan-umum',
+}
+
+/** Foto proyek: sesuai proyek bila ada, jika tidak sesuai jenis usaha (sumber: docs/kredit-foto.md). */
+export function projectPhoto(id: string, type: BusinessType) {
+  return `/projects/${PROJECT_PHOTO[id] ?? TYPE_PHOTO[type]}.jpg`
+}
+
+/** Sampul proyek: foto lapangan + gradasi gelap agar teks tetap terbaca. */
 export function ProjectCover({ type, id, className, children }: { type: BusinessType; id: string; className?: string; children?: ReactNode }) {
-  const seed = Number(id.replace(/\D/g, '')) || 1
   return (
-    <div className={cn('paper-grain relative overflow-hidden text-white', TYPE_BG[type], className)}>
-      <svg aria-hidden viewBox="0 0 400 160" preserveAspectRatio="none" className="absolute inset-0 size-full text-sun-500/30" fill="none" stroke="currentColor" strokeWidth="1.4">
-        {[0, 1, 2, 3, 4, 5].map((i) => {
-          const y = 40 + i * 18 + (seed % 7)
-          const a = 10 + ((seed * (i + 3)) % 14)
-          return <path key={i} d={`M-10 ${y} C 60 ${y - a}, 120 ${y + a}, 200 ${y} S 340 ${y - a}, 410 ${y}`} />
-        })}
-      </svg>
+    <div className={cn('relative overflow-hidden bg-kelp-950 text-white', TYPE_BG[type], className)}>
+      <img src={projectPhoto(id, type)} alt="" loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover animate-[fade_.5s_ease-out_both]" />
+      <span aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/10 to-black/55" />
       <span className="absolute bottom-3 right-3 flex size-11 items-center justify-center rounded-full bg-sun-500 text-kelp-950">
         <Icon name={TYPE_ICON[type]} size={22} />
       </span>
-      <Sparkle className="absolute right-[38%] top-4 size-4 text-sun-500 animate-[shimmer-star_3s_ease-in-out_infinite]" />
       <div className="relative">{children}</div>
     </div>
   )
@@ -58,8 +72,8 @@ export function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   const pct = (p.raised / p.target) * 100
   return (
     <button onClick={onOpen} className="block w-full overflow-hidden press rounded-md bg-surface text-left hover:shadow-soft">
-      <ProjectCover type={p.type} id={p.id} className="m-2 h-28 rounded-[22px] px-4 pt-3">
-        <span className="inline-flex h-7 items-center gap-1 rounded-full bg-white/10 px-3 text-2xs font-medium">
+      <ProjectCover type={p.type} id={p.id} className="m-2 h-36 rounded-[22px] px-4 pt-3">
+        <span className="inline-flex h-7 items-center gap-1 rounded-full bg-black/40 px-3 text-2xs font-medium backdrop-blur-sm">
           <Icon name={TYPE_ICON[p.type]} size={16} /> {BUSINESS_LABEL[p.type]}
         </span>
       </ProjectCover>
@@ -124,9 +138,21 @@ export function PageHeader({ eyebrow, title, trailing }: { eyebrow?: string; tit
   )
 }
 
-export function Avatar({ initials, tone = 'sun' }: { initials: string; tone?: 'sun' | 'kelp' }) {
+export function Avatar({ initials, photo, tone = 'sun', size = 48 }: { initials: string; photo?: string; tone?: 'sun' | 'kelp'; size?: number }) {
+  if (photo) {
+    return (
+      <img
+        src={photo}
+        alt=""
+        width={size}
+        height={size}
+        style={{ width: size, height: size }}
+        className="shrink-0 rounded-full object-cover object-[50%_22%] ring-2 ring-white"
+      />
+    )
+  }
   return (
-    <span className={cn('flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-bold', tone === 'sun' ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-700 text-white')}>
+    <span style={{ width: size, height: size }} className={cn('flex shrink-0 items-center justify-center rounded-full text-sm font-bold', tone === 'sun' ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-700 text-white')}>
       {initials}
     </span>
   )

@@ -1,6 +1,8 @@
+import { useMoney } from '../profile/Profile'
+import { NotifBell } from '../notifications'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Badge, Card, ChipRow, CountUp, HeroCard, Icon, IconButton, QuickAction, Reveal, SectionHeader } from '@/design'
+import { Badge, Card, ChipRow, CountUp, HeroCard, Icon, QuickAction, Reveal, SectionHeader } from '@/design'
 import { investorReturns, useMe, useStore } from '@/data/store'
 import { BUSINESS_LABEL, type BusinessType } from '@/lib/scoring.config'
 import { formatRupiah, formatRupiahShort } from '@/lib/format'
@@ -10,6 +12,7 @@ const FILTERS = ['Semua', ...Object.values(BUSINESS_LABEL)]
 
 export function InvestorHome() {
   const me = useMe()!
+  const money = useMoney()
   const nav = useNavigate()
   const [filter, setFilter] = useState('Semua')
   const [q, setQ] = useState('')
@@ -29,12 +32,12 @@ export function InvestorHome() {
   return (
     <div className="px-5 pb-8 pt-6">
       <div className="mb-5 flex items-center gap-3 animate-[rise_.4s_var(--ease-out-soft)_both]">
-        <Avatar initials={me.initials} />
+        <Avatar initials={me.initials} photo={me.photo} />
         <div className="min-w-0 flex-1">
           <p className="text-2xs text-ink-muted">{me.name}</p>
           <p className="truncate text-[19px] font-semibold leading-tight">Selamat datang 👋</p>
         </div>
-        <IconButton icon="bell" label="Notifikasi" />
+        <NotifBell role="investor" />
       </div>
 
       <HeroCard side={<Icon name="shield-check" size={24} />}>
@@ -44,7 +47,7 @@ export function InvestorHome() {
         </div>
         <p className="text-2xs text-kelp-300">Total investasi maritim</p>
         <p className="num text-[30px] font-semibold leading-tight tracking-tight">
-          <CountUp value={total} format={formatRupiah} />
+          <CountUp value={total} format={money(formatRupiah)} />
         </p>
         <div className="mt-4 flex items-end justify-between text-2xs">
           <span className="text-white/85">Bagi hasil diterima</span>

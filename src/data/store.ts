@@ -3,8 +3,8 @@ import { persist } from 'zustand/middleware'
 import { computeScore, type SignalInput } from '@/lib/scoring'
 import { makeBlock, type LedgerPayload } from '@/lib/ledger'
 import type { BusinessType } from '@/lib/scoring.config'
-import { buildSeed, daysFromNow, makeStages } from './seed'
-import type { FraudAlert, Investment, LedgerBlock, Project, SecurityEvent, User } from './types'
+import { buildSeed, daysFromNow, makeStages, SEED_VERSION } from './seed'
+import type { ForumThread, FraudAlert, Investment, LedgerBlock, Project, SecurityEvent, User, UserPrefs } from './types'
 
 /**
  * Adapter data LOKAL (PRD §16.1): seluruh state disimpan di localStorage browser
@@ -17,6 +17,10 @@ type Data = {
   alerts: FraudAlert[]
   securityEvents: SecurityEvent[]
   ledger: LedgerBlock[]
+  forum: ForumThread[]
+  /** id notifikasi yang sudah dibaca, per pengguna */
+  notifRead: Record<string, string[]>
+  seedVersion: number
 }
 
 type State = Data & {
@@ -37,7 +41,16 @@ type State = Data & {
   resolveAlert: (id: string, status: 'actioned' | 'dismissed', resolution: string) => void
   setSelfLock: (v: boolean) => void
   tamperLedger: () => void
+  updateProfile: (patch: Partial<Pick<User, 'name' | 'phone' | 'location' | 'email' | 'kusuka' | 'kub'>>) => void
+  updatePrefs: (patch: Partial<UserPrefs>) => void
+  markNotifsRead: (ids: string[]) => void
+  createThread: (t: { title: string; body: string; tag: string }) => ForumThread
+  addComment: (threadId: string, body: string) => void
+  toggleLike: (threadId: string) => void
 }
+
+export const DEFAULT_PREFS: UserPrefs = { notifWhatsapp: true, notifPush: true, loginAlert: true, twoStep: false, hideBalance: false }
+const ROLE_LABEL = { nelayan: 'Nelayan', investor: 'Investor', admin: 'Admin' } as const
 
 export type NewProjectInput = {
   title: string
@@ -48,7 +61,7 @@ export type NewProjectInput = {
   signals: SignalInput
 }
 
-const empty: Data = { users: [], projects: [], investments: [], alerts: [], securityEvents: [], ledger: [] }
+const empty: Data = { users: [], projects: [], investments: [], alerts: [], securityEvents: [], ledger: [], forum: [], notifRead: {}, seedVersion: 0 }
 
 let queue: Promise<unknown> = Promise.resolve()
 /** Penulisan ledger berurutan supaya nomor blok & prevHash tidak tabrakan. */
@@ -92,9 +105,9 @@ export const useStore = create<State>()(
       tamper: null,
 
       init: async () => {
-        if (get().ready && get().projects.length) return
+        if (get().ready && get().projects.length && get().seedVersion === SEED_VERSION) return
         const seed = await buildSeed()
-        set({ ...seed, ready: true })
+        set({ ...seed, notifRead: {}, ready: true })
       },
 
       login: (userId) => {
@@ -108,7 +121,7 @@ export const useStore = create<State>()(
 
       resetDemo: async () => {
         const seed = await buildSeed()
-        set({ ...seed, ready: true, selfLocked: false, tamper: null })
+        set({ ...seed, notifRead: {}, ready: true, selfLocked: false, tamper: null })
       },
 
       submitProject: async (input) => {
@@ -287,6 +300,43 @@ export const useStore = create<State>()(
           tamper: { block: target.block, amount: target.amount },
         })
       },
+
+      updateProfile: (patch) => {
+        const id = get().sessionUserId
+        set({ users: get().users.map((u) => (u.id === id ? { ...u, ...patch, initials: initialsOf(patch.name ?? u.name) } : u)) })
+      },
+
+      updatePrefs: (patch) => {
+        const id = get().sessionUserId
+        set({ users: get().users.map((u) => (u.id === id ? { ...u, prefs: { ...DEFAULT_PREFS, ...u.prefs, ...patch } } : u)) })
+      },
+
+      markNotifsRead: (ids) => {
+        const id = get().sessionUserId
+        if (!id) return
+        const prev = get().notifRead[id] ?? []
+        const next = Array.from(new Set([...prev, ...ids]))
+        if (next.length === prev.length) return
+        set({ notifRead: { ...get().notifRead, [id]: next } })
+      },
+
+      createThread: ({ title, body, tag }) => {
+        const me = get().users.find((u) => u.id === get().sessionUserId)!
+        const t: ForumThread = { id: `TH-${Date.now()}`, authorId: me.id, authorName: me.name, authorRole: ROLE_LABEL[me.role], tag, title, body, createdAt: now(), likes: [], comments: [] }
+        set({ forum: [t, ...get().forum] })
+        return t
+      },
+
+      addComment: (threadId, body) => {
+        const me = get().users.find((u) => u.id === get().sessionUserId)!
+        const c = { id: `C-${Date.now()}`, authorId: me.id, authorName: me.name, authorRole: ROLE_LABEL[me.role], body, createdAt: now() }
+        set({ forum: get().forum.map((t) => (t.id === threadId ? { ...t, comments: [...t.comments, c] } : t)) })
+      },
+
+      toggleLike: (threadId) => {
+        const me = get().sessionUserId!
+        set({ forum: get().forum.map((t) => (t.id === threadId ? { ...t, likes: t.likes.includes(me) ? t.likes.filter((x) => x !== me) : [...t.likes, me] } : t)) })
+      },
     }),
     {
       name: 'artanaya-demo-v2',
@@ -297,6 +347,9 @@ export const useStore = create<State>()(
         alerts: s.alerts,
         securityEvents: s.securityEvents,
         ledger: s.ledger,
+        forum: s.forum,
+        notifRead: s.notifRead,
+        seedVersion: s.seedVersion,
         ready: s.ready,
         selfLocked: s.selfLocked,
         tamper: s.tamper,
@@ -313,6 +366,11 @@ if (typeof window !== 'undefined') {
 }
 
 /* ---------- selector bantu ---------- */
+
+function initialsOf(name: string) {
+  const parts = name.trim().split(/\s+/)
+  return ((parts[0]?.[0] ?? '') + (parts[1]?.[0] ?? parts[0]?.[1] ?? '')).toUpperCase()
+}
 
 export const useMe = () => useStore((s) => s.users.find((u) => u.id === s.sessionUserId) ?? null)
 

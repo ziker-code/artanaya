@@ -3,6 +3,7 @@ import { Button, Icon, Wordmark, type IconName } from '@/design'
 import { useBoot } from '@/app/RoleShell'
 import { useStore } from '@/data/store'
 import { DEMO } from '@/data/seed'
+import { useSyncStatus } from '@/data/sync'
 import { toast } from '@/app/toast'
 import type { Role } from '@/data/types'
 
@@ -17,6 +18,7 @@ export function Splash() {
   const login = useStore((s) => s.login)
   const reset = useStore((s) => s.resetDemo)
   const nav = useNavigate()
+  const sync = useSyncStatus((s) => s.status)
 
   return (
     <div className="min-h-dvh bg-kelp-950">
@@ -71,8 +73,16 @@ export function Splash() {
             <p className="flex items-center gap-1.5 font-bold">
               <Icon name="info" size={20} /> Tips demo
             </p>
-            <p className="mt-1">Buka dua tab (misal Nelayan dan Admin) berdampingan: data tersinkron otomatis, pengajuan baru langsung muncul di antrean admin.</p>
+            <p className="mt-1">
+              {sync === 'online'
+                ? 'Data tersambung ke server: buka akun Nelayan di HP dan akun Admin di laptop, perubahan muncul seketika di keduanya.'
+                : 'Buka dua tab (misal Nelayan dan Admin) berdampingan: data tersinkron otomatis, pengajuan baru langsung muncul di antrean admin.'}
+            </p>
           </div>
+          <p className="mt-3 flex items-center justify-center gap-1.5 text-2xs text-ink-muted">
+            <span className={`size-2 rounded-full ${sync === 'online' ? 'bg-kelp-500' : sync === 'connecting' ? 'bg-sun-500' : 'bg-ink-faint'}`} />
+            {sync === 'online' ? 'Tersambung Supabase · data bersama real-time' : sync === 'connecting' ? 'Menyambung ke server…' : 'Mode lokal · data di perangkat ini'}
+          </p>
 
           <Button
             variant="quiet"

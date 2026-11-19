@@ -2,7 +2,14 @@
 
 - **Tanggal:** 19 Nov 2026, ±23.30 (tenggat 20 Nov 08.00)
 - **Fase PRD:** Rencana Kilat §16, Blok 7 (P1: adapter Supabase)
-- **Status:** Selesai di lokal. Di Vercel aktif setelah env var diisi + redeploy
+- **Status:** Selesai — aktif di lokal **dan** di https://artanaya.vercel.app
+
+## 0. Pembaruan produksi (19 Nov 2026, 23.4x)
+- Env var `VITE_SUPABASE_URL` & `VITE_SUPABASE_ANON_KEY` diisi pemilik di Vercel, lalu redeploy.
+- Situs live menampilkan "Tersambung Supabase · data bersama real-time". ✅
+- Uji real-time produksi: halaman Tinjau Admin terbuka, perangkat lain mengubah judul PRJ-0033 → muncul tanpa reload. ✅
+- Data produksi di-reset ke seed (versi 6, 7 proyek, tanpa sisa data uji). ✅
+- Push GitHub sempat gagal karena DNS laptop; berhasil setelah DNS pulih (`16c6122`).
 
 ## 1. Ringkasan
 Aplikasi sekarang menyimpan data demo di Supabase dan menyinkronkannya real-time ke semua perangkat. Tanpa env var atau saat Supabase tidak terjangkau, aplikasi otomatis kembali ke mode lokal.

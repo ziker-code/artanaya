@@ -4,7 +4,7 @@
 @import '@fontsource/poppins/600.css';
 @import '@fontsource/poppins/700.css';
 
-/* ARTANAYA design tokens v2 — gaya "sage · hitam · lime" (lihat docs/progress/05-redesign.md).
+/* ARTANAYA design tokens v3 — palet "Pesisir" dari warna logo: teal #187878, hijau #2E9078, cyan #1C92C2, biru #1E62A0, putih.
    Nama token lama dipertahankan agar layar tidak perlu diubah; nilainya yang diganti. */
 @theme {
   --color-*: initial;
@@ -12,34 +12,34 @@
   --color-transparent: transparent;
   --color-current: currentColor;
 
-  --color-paper: #d3e0ca;        /* latar sage */
-  --color-paper-sunk: #e4ecdc;   /* input, area tenggelam */
-  --color-surface: #f7faf3;      /* kartu putih kehijauan */
-  --color-ink: #0d0f0b;
-  --color-ink-muted: #56604d;
-  --color-ink-faint: #879079;
-  --color-line: #c2d1b8;
+  --color-paper: #ecf6f4;
+  --color-paper-sunk: #dcede9;
+  --color-surface: #ffffff;
+  --color-ink: #0b2c2f;
+  --color-ink-muted: #4a6966;
+  --color-ink-faint: #86a29e;
+  --color-line: #c5ddd8;
 
-  --color-kelp-950: #070806;     /* hitam kartu */
-  --color-kelp-900: #111310;
-  --color-kelp-800: #1d201b;
-  --color-kelp-700: #26331d;     /* teks hijau tua */
-  --color-kelp-500: #5d8c39;
-  --color-kelp-300: #a6b29c;     /* teks sekunder di atas hitam */
-  --color-kelp-200: #b8e68f;     /* batang grafik lembut */
-  --color-kelp-100: #e3f2d3;
+  --color-kelp-950: #126565;
+  --color-kelp-900: #167070;
+  --color-kelp-800: #1b7f7d;
+  --color-kelp-700: #0f5757;
+  --color-kelp-500: #2e9078;
+  --color-kelp-300: #a7d3cc;
+  --color-kelp-200: #9ad3e8;
+  --color-kelp-100: #dcf0ee;
 
-  --color-sun-600: #8fd046;      /* lime tekan */
-  --color-sun-500: #a6e465;      /* lime aksi utama */
-  --color-sun-300: #c9f39a;      /* lime terang di atas hitam */
-  --color-sun-100: #ebf8dc;
+  --color-sun-600: #167fab;
+  --color-sun-500: #1c92c2;
+  --color-sun-300: #9fdcf3;
+  --color-sun-100: #dcf1fa;
 
   --color-coral-700: #983824;
   --color-coral-600: #c44d33;
   --color-coral-100: #f6ddd5;
 
-  --color-tide-600: #2d5f57;
-  --color-tide-100: #d9e9e1;
+  --color-tide-600: #1e62a0;
+  --color-tide-100: #dde9f6;
 
   --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
   --font-serif: 'Poppins', ui-sans-serif, system-ui, sans-serif;
@@ -51,8 +51,8 @@
   --radius-md: 24px;
   --radius-lg: 32px;
 
-  --shadow-float: 0 18px 40px -16px rgb(7 8 6 / 0.45), 0 4px 10px -4px rgb(7 8 6 / 0.2);
-  --shadow-soft: 0 6px 18px -10px rgb(7 8 6 / 0.25);
+  --shadow-float: 0 18px 40px -16px rgb(10 60 60 / 0.35), 0 4px 10px -4px rgb(10 60 60 / 0.15);
+  --shadow-soft: 0 6px 18px -10px rgb(10 60 60 / 0.18);
 
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }

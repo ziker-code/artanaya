@@ -64,7 +64,7 @@ export function AdminHome() {
         <SectionHeader title="Tugas hari ini" />
         <div className="grid grid-cols-2 gap-3">
           <button onClick={() => nav('/admin/tinjau')} className="press rounded-md bg-surface p-4 text-left hover:shadow-soft">
-            <span className="flex size-11 items-center justify-center rounded-full bg-sun-500 text-kelp-950">
+            <span className="flex size-11 items-center justify-center rounded-full bg-sun-500 text-white">
               <Icon name="clipboard-check" size={20} />
             </span>
             <p className="num mt-3 text-2xl font-semibold">{queue}</p>

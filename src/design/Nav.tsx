@@ -36,7 +36,7 @@ export function BottomNav({ items, active, onSelect }: { items: NavItem[]; activ
                 onClick={() => onSelect(it.key)}
                 aria-current={on ? 'page' : undefined}
                 aria-label={it.label}
-                className={cn('press relative flex h-12 items-center justify-center rounded-full', on ? 'px-4 text-kelp-950' : 'w-12 text-white/75 hover:text-white')}
+                className={cn('press relative flex h-12 items-center justify-center rounded-full', on ? 'px-4 text-white' : 'w-12 text-white/75 hover:text-white')}
               >
                 {on && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-full bg-sun-500" transition={{ type: 'spring', stiffness: 420, damping: 34 }} />}
                 <span className="relative flex items-center gap-1.5">

@@ -74,7 +74,7 @@ export function SubmitProject() {
                       type === t ? 'border-kelp-950 bg-kelp-950 text-white' : 'border-transparent bg-surface',
                     )}
                   >
-                    <span className={cn('flex size-10 items-center justify-center rounded-full', type === t ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-950 text-white')}>
+                    <span className={cn('flex size-10 items-center justify-center rounded-full', type === t ? 'bg-sun-500 text-white' : 'bg-kelp-950 text-white')}>
                       <Icon name={TYPE_ICON[t]} size={20} />
                     </span>
                     <span className="font-bold">{BUSINESS_LABEL[t]}</span>

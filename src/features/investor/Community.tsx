@@ -30,7 +30,7 @@ function AuthorBadge({ name, role }: { name: string; role: string }) {
   const initials = name.split(' ').map((w) => w[0]).slice(0, 2).join('')
   return (
     <span className="flex min-w-0 items-center gap-2 text-2xs">
-      <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full font-semibold', role === 'Fasilitator' ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-950 text-white')}>{initials}</span>
+      <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full font-semibold', role === 'Fasilitator' ? 'bg-sun-500 text-white' : 'bg-kelp-950 text-white')}>{initials}</span>
       <span className="min-w-0">
         <b className="block truncate text-sm font-semibold">{name}</b>
         <span className="text-ink-muted">{role}</span>
@@ -50,7 +50,7 @@ function LikeButton({ t }: { t: ForumThread }) {
         toggle(t.id)
       }}
       aria-pressed={liked}
-      className={cn('press inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-2xs font-semibold', liked ? 'bg-sun-500 text-kelp-950' : 'bg-paper-sunk text-ink')}
+      className={cn('press inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-2xs font-semibold', liked ? 'bg-sun-500 text-white' : 'bg-paper-sunk text-ink')}
     >
       <svg viewBox="0 0 24 24" className="size-4" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="1.8" aria-hidden>
         <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" strokeLinejoin="round" />
@@ -214,7 +214,7 @@ export function ThreadDetail() {
           <span className="sr-only">Tulis komentar</span>
           <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Tulis komentar…" className="w-full bg-transparent outline-none placeholder:text-ink-faint" />
         </label>
-        <button type="submit" aria-label="Kirim komentar" disabled={text.trim().length < 2} className="press flex size-13 shrink-0 items-center justify-center rounded-full bg-sun-500 text-kelp-950 shadow-float disabled:opacity-50">
+        <button type="submit" aria-label="Kirim komentar" disabled={text.trim().length < 2} className="press flex size-13 shrink-0 items-center justify-center rounded-full bg-sun-500 text-white shadow-float disabled:opacity-50">
           <Icon name="send" size={22} />
         </button>
       </form>

@@ -79,7 +79,7 @@ export function NotifBell({ role }: { role: Role }) {
     <span className="relative">
       <IconButton icon="bell" label={unread ? `Notifikasi, ${unread} belum dibaca` : 'Notifikasi'} onClick={() => nav(`/${role}/notifikasi`)} />
       {unread > 0 && (
-        <span className="num pointer-events-none absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-sun-500 px-1 text-[11px] font-semibold text-kelp-950 ring-2 ring-paper animate-[pop_.35s_var(--ease-out-soft)_both]">
+        <span className="num pointer-events-none absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-sun-500 px-1 text-[11px] font-semibold text-white ring-2 ring-paper animate-[pop_.35s_var(--ease-out-soft)_both]">
           {unread > 9 ? '9+' : unread}
         </span>
       )}
@@ -132,7 +132,7 @@ export function NotificationsPage({ role }: { role: Role }) {
                       <span
                         className={cn(
                           'flex size-11 shrink-0 items-center justify-center rounded-full',
-                          n.tone === 'lime' ? 'bg-sun-500 text-kelp-950' : n.tone === 'coral' ? 'bg-coral-100 text-coral-700' : 'bg-kelp-950 text-white',
+                          n.tone === 'lime' ? 'bg-sun-500 text-white' : n.tone === 'coral' ? 'bg-coral-100 text-coral-700' : 'bg-kelp-950 text-white',
                         )}
                       >
                         <Icon name={n.icon} size={20} />

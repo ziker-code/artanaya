@@ -29,7 +29,7 @@ function Item({ t }: { t: Toast }) {
         t.tone === 'ok' ? 'bg-kelp-950 text-white' : 'bg-coral-600 text-white',
       )}
     >
-      <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full', t.tone === 'ok' ? 'bg-sun-500 text-kelp-950' : 'bg-white/20 text-white')}>
+      <span className={cn('flex size-9 shrink-0 items-center justify-center rounded-full', t.tone === 'ok' ? 'bg-sun-500 text-white' : 'bg-white/20 text-white')}>
         <Icon name={t.tone === 'ok' ? 'check' : 'warning'} size={20} />
       </span>
       <span>{t.text}</span>

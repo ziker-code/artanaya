@@ -46,7 +46,7 @@ export function InstallAppCard({ compact, className }: { compact?: boolean; clas
   return (
     <>
       <button onClick={install} className={cn('press flex w-full items-center gap-3 rounded-md bg-kelp-950 p-3.5 text-left text-white', className)}>
-        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-sun-500 text-kelp-950">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-sun-500 text-white">
           <Icon name="arrow-down-left" size={20} />
         </span>
         <span className="min-w-0 flex-1">

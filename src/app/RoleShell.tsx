@@ -63,7 +63,7 @@ export function RoleShell({ role }: { role: Role }) {
   const isRoot = depth === 1 || (depth === 2 && items.some((i) => i.key === seg))
 
   return (
-    <div className="min-h-dvh bg-[#bccbb2]">
+    <div data-outer className="min-h-dvh bg-[#bccbb2]">
       <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-x-hidden bg-paper">
         <main className={isRoot ? 'flex-1 pb-28' : 'flex-1 pb-6'}>
           {/* Animasi masuk halaman via CSS: konten berganti seketika, animasi tidak pernah menahan navigasi. */}

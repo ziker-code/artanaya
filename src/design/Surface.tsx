@@ -22,6 +22,7 @@ export function HeroCard({ className, children, side, ...rest }: HTMLAttributes<
   return (
     <div
       {...rest}
+      data-hero
       className={cn('relative flex overflow-hidden rounded-lg bg-kelp-950 text-white shadow-float animate-[rise_.55s_var(--ease-out-soft)_both]', className)}
     >
       <Sparkle className="pointer-events-none absolute left-[52%] top-6 size-5 text-sun-500 animate-[shimmer-star_3.2s_ease-in-out_infinite]" />

@@ -11,7 +11,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      includeAssets: ['favicon.ico', 'logo.svg', 'apple-touch-icon-180x180.png'],
+      includeAssets: ['favicon.ico', 'brand/logo-mark-128.png', 'apple-touch-icon-180x180.png'],
       manifest: {
         id: '/',
         name: 'ARTANAYA — Modal Syariah Pesisir',

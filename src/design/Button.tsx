@@ -6,7 +6,7 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'quiet'
 type Size = 'md' | 'sm'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-sun-500 text-kelp-950 hover:bg-sun-600',
+  primary: 'bg-sun-500 text-white hover:bg-sun-600',
   secondary: 'bg-kelp-900 text-white hover:bg-kelp-800',
   ghost: 'bg-white text-ink hover:bg-paper-sunk',
   danger: 'bg-coral-600 text-white hover:bg-coral-700',
@@ -72,7 +72,7 @@ export function IconButton({ icon, label, tone = 'soft', badge, className, ...re
         'press relative inline-flex size-12 shrink-0 items-center justify-center rounded-full',
         tone === 'plain' && 'text-ink hover:bg-white/60',
         tone === 'soft' && 'bg-white text-ink shadow-soft hover:bg-surface',
-        tone === 'lime' && 'bg-sun-500 text-kelp-950',
+        tone === 'lime' && 'bg-sun-500 text-white',
         tone === 'dark' && 'bg-kelp-900 text-white',
         tone === 'onDark' && 'bg-white/10 text-white hover:bg-white/20',
         className,
@@ -91,7 +91,7 @@ export function QuickAction({ icon, label, onClick, accent }: { icon: IconName; 
       <span
         className={cn(
           'press flex size-[60px] items-center justify-center rounded-full transition-colors',
-          accent ? 'bg-sun-500 text-kelp-950' : 'bg-white text-ink shadow-soft group-hover:bg-surface',
+          accent ? 'bg-sun-500 text-white' : 'bg-white text-ink shadow-soft group-hover:bg-surface',
         )}
       >
         <Icon name={icon} size={24} />

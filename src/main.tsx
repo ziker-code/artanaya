@@ -2,9 +2,7 @@ import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
 import './index.css'
-import { applyPreviewTheme } from '@/app/themes'
 
-applyPreviewTheme()
 import { RoleShell } from '@/app/RoleShell'
 import { Toaster } from '@/app/toast'
 import { SignIn, SignUp } from '@/features/auth/Auth'
@@ -24,7 +22,6 @@ import { Prospectus } from '@/features/investor/Prospectus'
 import { Portfolio } from '@/features/investor/Portfolio'
 import { SecurityRadar } from '@/features/investor/SecurityRadar'
 import { Community, ThreadDetail } from '@/features/investor/Community'
-const ThemeCompare = lazy(() => import('@/pages/ThemeCompare').then((m) => ({ default: m.ThemeCompare })))
 const Styleguide = lazy(() => import('@/pages/Styleguide').then((m) => ({ default: m.Styleguide })))
 
 const router = createBrowserRouter([
@@ -80,7 +77,6 @@ const router = createBrowserRouter([
       { path: 'notifikasi', element: <NotificationsPage role="admin" /> },
     ],
   },
-  { path: '/tema', element: <Suspense fallback={null}><ThemeCompare /></Suspense> },
   { path: '/styleguide', element: <Suspense fallback={null}><Styleguide /></Suspense> },
   { path: '*', element: <Navigate to="/" replace /> },
 ])

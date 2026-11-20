@@ -47,7 +47,7 @@ export function ProjectCover({ type, id, className, children }: { type: Business
     <div className={cn('relative overflow-hidden bg-kelp-950 text-white', TYPE_BG[type], className)}>
       <img src={projectPhoto(id, type)} alt="" loading="lazy" decoding="async" className="absolute inset-0 size-full object-cover animate-[fade_.5s_ease-out_both]" />
       <span aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/10 to-black/55" />
-      <span className="absolute bottom-3 right-3 flex size-11 items-center justify-center rounded-full bg-sun-500 text-kelp-950">
+      <span className="absolute bottom-3 right-3 flex size-11 items-center justify-center rounded-full bg-sun-500 text-white">
         <Icon name={TYPE_ICON[type]} size={22} />
       </span>
       <div className="relative">{children}</div>
@@ -93,7 +93,7 @@ export function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
             <b className="num text-ink">{formatRupiah(p.raised)}</b>
             <span className="text-ink-muted"> / {formatRupiah(p.target)}</span>
           </span>
-          <span className="num rounded-full bg-sun-500 px-2.5 py-0.5 text-2xs font-semibold text-kelp-950">±{p.expectedReturnPct}%/thn</span>
+          <span className="num rounded-full bg-sun-500 px-2.5 py-0.5 text-2xs font-semibold text-white">±{p.expectedReturnPct}%/thn</span>
         </div>
       </div>
     </button>
@@ -152,7 +152,7 @@ export function Avatar({ initials, photo, tone = 'sun', size = 48 }: { initials:
     )
   }
   return (
-    <span style={{ width: size, height: size }} className={cn('flex shrink-0 items-center justify-center rounded-full text-sm font-bold', tone === 'sun' ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-700 text-white')}>
+    <span style={{ width: size, height: size }} className={cn('flex shrink-0 items-center justify-center rounded-full text-sm font-bold', tone === 'sun' ? 'bg-sun-500 text-white' : 'bg-kelp-700 text-white')}>
       {initials}
     </span>
   )

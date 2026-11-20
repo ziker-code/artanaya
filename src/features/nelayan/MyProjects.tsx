@@ -41,7 +41,7 @@ export function MyProjects() {
 
 const stageTone: Record<Stage['status'], string> = {
   locked: 'bg-paper-sunk text-ink-faint',
-  available: 'bg-sun-500 text-kelp-950',
+  available: 'bg-sun-500 text-white',
   disbursed: 'bg-kelp-700 text-white',
   reported: 'bg-kelp-100 text-kelp-700',
 }

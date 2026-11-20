@@ -29,7 +29,7 @@ export function HeroCard({ className, children, side, ...rest }: HTMLAttributes<
       <Sparkle className="pointer-events-none absolute left-[60%] top-[58%] size-2.5 text-sun-500/70 animate-[shimmer-star_2.6s_ease-in-out_.6s_infinite]" />
       <Sparkle className="pointer-events-none absolute left-[78%] top-[38%] size-3 text-white/40 animate-[shimmer-star_3.6s_ease-in-out_1.1s_infinite]" />
       <div className="relative min-w-0 flex-1 p-5">{children}</div>
-      {side !== undefined && <div className="relative my-3 mr-3 flex w-14 shrink-0 items-center justify-center rounded-[22px] bg-sun-500 text-kelp-950">{side}</div>}
+      {side !== undefined && <div className="relative my-3 mr-3 flex w-14 shrink-0 items-center justify-center rounded-[22px] bg-sun-500 text-white">{side}</div>}
     </div>
   )
 }
@@ -55,7 +55,7 @@ type ListRowProps = {
 
 const iconTones = {
   kelp: 'bg-kelp-950 text-sun-500',
-  sun: 'bg-sun-500 text-kelp-950',
+  sun: 'bg-sun-500 text-white',
   coral: 'bg-coral-100 text-coral-700',
   tide: 'bg-kelp-950 text-white',
   plain: 'bg-kelp-950 text-white',

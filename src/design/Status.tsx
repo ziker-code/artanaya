@@ -5,12 +5,12 @@ import { Icon, type IconName } from './Icon'
 type BadgeTone = 'kelp' | 'sun' | 'coral' | 'tide' | 'neutral' | 'onDark'
 
 const badgeTones: Record<BadgeTone, string> = {
-  kelp: 'bg-sun-500 text-kelp-950',
+  kelp: 'bg-sun-500 text-white',
   sun: 'bg-kelp-950 text-sun-300',
   coral: 'bg-coral-100 text-coral-700',
   tide: 'bg-white text-ink',
   neutral: 'bg-paper-sunk text-ink-muted',
-  onDark: 'bg-sun-500 text-kelp-950',
+  onDark: 'bg-sun-500 text-white',
 }
 
 export function Badge({ tone = 'neutral', icon, children }: { tone?: BadgeTone; icon?: IconName; children: ReactNode }) {
@@ -118,7 +118,7 @@ export function Notice({ tone = 'sun', icon = 'calendar', title, children }: { t
         tone === 'coral' && 'bg-coral-100 text-coral-700',
       )}
     >
-      <span className={cn('flex size-10 shrink-0 items-center justify-center rounded-full', tone === 'coral' ? 'bg-coral-600 text-white' : tone === 'sun' ? 'bg-sun-500 text-kelp-950' : 'bg-kelp-950 text-white')}>
+      <span className={cn('flex size-10 shrink-0 items-center justify-center rounded-full', tone === 'coral' ? 'bg-coral-600 text-white' : tone === 'sun' ? 'bg-sun-500 text-white' : 'bg-kelp-950 text-white')}>
         <Icon name={icon} size={20} />
       </span>
       <div className="min-w-0 text-sm">

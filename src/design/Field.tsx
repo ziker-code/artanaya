@@ -94,7 +94,7 @@ export function MoneyInput({ label, value, onChange, step = 1_000_000, min = 0, 
           aria-label={`Tambah ${formatRupiah(step)}`}
           onClick={() => onChange(clamp(value + step))}
           disabled={value >= max}
-          className="press flex size-12 shrink-0 items-center justify-center rounded-full bg-sun-500 text-kelp-950 disabled:opacity-40"
+          className="press flex size-12 shrink-0 items-center justify-center rounded-full bg-sun-500 text-white disabled:opacity-40"
         >
           <Icon name="plus" size={20} />
         </button>

@@ -30,7 +30,7 @@ function AuthShell({ title, children }: { title: string; children: ReactNode }) 
       <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col overflow-hidden bg-paper">
         <header className="relative z-10 bg-kelp-950 px-6 pb-8 pt-10 text-center text-white">
           <span className="mx-auto mb-4 block w-fit rounded-full bg-white/10 p-1.5 ring-1 ring-sun-500/40 animate-[pop_.5s_var(--ease-out-soft)_both]">
-            <LogoMark size={44} />
+            <LogoMark size={76} />
           </span>
           <h1 className="text-[28px] font-semibold tracking-tight animate-[rise_.45s_var(--ease-out-soft)_both]">{title}</h1>
           <Drips />
